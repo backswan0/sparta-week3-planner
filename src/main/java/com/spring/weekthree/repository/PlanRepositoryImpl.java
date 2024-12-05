@@ -9,11 +9,11 @@ import java.util.Map;
 
 @Repository
 public class PlanRepositoryImpl implements PlanRepository {
-    // 속성
+    // [1] 속성
     private final Map<Long, Plan> planList = new HashMap<>();
 
     @Override
-    public Plan savePlan(Plan plan) {
+    public Plan savePlanInRepository(Plan plan) {
         Long planId = planList.isEmpty() ? 1 : Collections.max(planList.keySet()) + 1;
 
         plan.setId(planId);
@@ -23,7 +23,7 @@ public class PlanRepositoryImpl implements PlanRepository {
         return plan;
     }
 
-    // 생성자
+    // [2] 생성자
 
-    // 기능
+    // [3] 기능
 }

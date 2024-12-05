@@ -8,16 +8,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PlanServiceImpl implements PlanService {
-    // 속성
+    // [1] 속성
     private final PlanRepository planRepository;
 
-    // 생성자
-    public PlanServiceImpl (PlanRepository planRepository) {
+    // [2] 생성자
+    public PlanServiceImpl(PlanRepository planRepository) {
         this.planRepository = planRepository;
     }
 
+    // [3] 기능
     @Override
-    public PlanResponseDto savePlan(PlanRequestDto requestDto) {
+    public PlanResponseDto processSaveInService(PlanRequestDto requestDto) {
 
         Plan plan = new Plan(
                 requestDto.getName(),
@@ -27,10 +28,13 @@ public class PlanServiceImpl implements PlanService {
                 requestDto.getTask()
         );
 
-        Plan savedPlan = planRepository.savePlan(plan);
+        Plan savedPlan = planRepository.savePlanInRepository(plan);
 
         return new PlanResponseDto(savedPlan);
-    }
+         /*
+         TODO 실습에서는 아래와 같이 했는데 똑같이 적용하지 못했다. 뭐가 문제일까?
+          return memoRepository.saveMemo(memo);
+          */
 
-    // 기능
+    }
 }

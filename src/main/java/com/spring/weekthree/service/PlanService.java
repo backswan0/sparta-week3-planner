@@ -4,5 +4,5 @@ import com.spring.weekthree.dto.PlanRequestDto;
 import com.spring.weekthree.dto.PlanResponseDto;
 
 public interface PlanService {
-    PlanResponseDto savePlan(PlanRequestDto requestDto);
+    PlanResponseDto processSaveInService(PlanRequestDto requestDto);
 }

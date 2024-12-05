@@ -10,21 +10,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/plans")
 public class PlanController {
-    // 속성
+    // [1] 속성
     private final PlanService planService;
 
-    // 생성자
+    // [2] 생성자
     public PlanController(PlanService planService) {
-
         this.planService = planService;
     }
 
-    // 기능
+    // [3] 기능
     @PostMapping
     public ResponseEntity<PlanResponseDto> createPlan(@RequestBody PlanRequestDto requestDto) {
-
-        PlanResponseDto responseDto = planService.savePlan(requestDto);
-
+        PlanResponseDto responseDto = planService.processSaveInService(requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 }

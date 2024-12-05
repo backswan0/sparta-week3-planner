@@ -2,16 +2,18 @@ package com.spring.weekthree.dto;
 
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 public class PlanRequestDto {
-    // 속성
+    // [1] 속성
     private String name;
     private String password;
     private String plannedDate;
     private String title;
     private String task;
 
-    // 생성자
+    // [2] 생성자
 
-    // 기능
+    // [3] 기능
 }
