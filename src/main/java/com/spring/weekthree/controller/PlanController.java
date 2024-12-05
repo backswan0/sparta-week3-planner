@@ -7,6 +7,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+/**
+ * Create 완료
+ * Read 완료 (목록 조회)
+ *
+ *
+ *
+ */
+
 @RestController
 @RequestMapping("/plans")
 public class PlanController {
@@ -23,5 +33,12 @@ public class PlanController {
     public ResponseEntity<PlanResponseDto> createPlan(@RequestBody PlanRequestDto requestDto) {
         PlanResponseDto responseDto = planService.processSaveInService(requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PlanResponseDto>> readAllPlans() {
+        List<PlanResponseDto> allPlans = planService.processViewService();
+
+        return new ResponseEntity<>(allPlans, HttpStatus.OK);
     }
 }

@@ -6,6 +6,16 @@ import com.spring.weekthree.entity.Plan;
 import com.spring.weekthree.repository.PlanRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+/**
+ * Create 완료
+ * Read 완료 (목록 조회)
+ *
+ *
+ *
+ */
+
 @Service
 public class PlanServiceImpl implements PlanService {
     // [1] 속성
@@ -28,7 +38,7 @@ public class PlanServiceImpl implements PlanService {
                 requestDto.getTask()
         );
 
-        Plan savedPlan = planRepository.savePlanInRepository(plan);
+        Plan savedPlan = planRepository.saveEachPlan(plan);
 
         return new PlanResponseDto(savedPlan);
          /*
@@ -36,5 +46,19 @@ public class PlanServiceImpl implements PlanService {
           return memoRepository.saveMemo(memo);
           */
 
+    }
+
+    @Override
+    public List<PlanResponseDto> processViewService() {
+
+        return planRepository.pullAllPlans();
+        /*
+        TODO
+         [수정 전]
+         List<PlanResponseDto> allPlans = planRepository.pullAllPlans();
+         return allPlans;
+         [고민]
+         어떤 형태가 비즈니스 로직이 더 한 눈에 잘 들어올까?
+         */
     }
 }

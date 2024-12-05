@@ -5,6 +5,14 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * Create 완료
+ * Read 완료 (목록 조회)
+ *
+ *
+ *
+ */
+
 @Getter
 public class Plan {
     // [1-a] 속성 중 사용자의 입력값을 저장하는 필드

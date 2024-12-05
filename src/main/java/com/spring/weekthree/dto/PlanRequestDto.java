@@ -2,7 +2,13 @@ package com.spring.weekthree.dto;
 
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+/**
+ * Create 완료
+ * Read 완료 (목록 조회)
+ *
+ *
+ *
+ */
 
 @Getter
 public class PlanRequestDto {
