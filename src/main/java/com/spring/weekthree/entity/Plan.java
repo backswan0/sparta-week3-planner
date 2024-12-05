@@ -1,12 +1,9 @@
 package com.spring.weekthree.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-
 @Getter
-@AllArgsConstructor
-public class Scheduler {
+public class Plan {
 
     private Long id;
     private String name;
@@ -15,7 +12,7 @@ public class Scheduler {
     private String title;
     private String task;
 
-    public Scheduler(
+    public Plan(
             String name,
             String password,
             String plannedDate,
