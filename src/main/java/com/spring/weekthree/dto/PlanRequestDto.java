@@ -3,9 +3,10 @@ package com.spring.weekthree.dto;
 import lombok.Getter;
 
 @Getter
-public class PlanCreateRequestDto {
+public class PlanRequestDto {
     // 속성
     private String name;
+    private String password;
     private String plannedDate;
     private String title;
     private String task;

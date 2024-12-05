@@ -1,8 +1,8 @@
 package com.spring.weekthree.service;
 
-import com.spring.weekthree.dto.PlanCreateRequestDto;
-import com.spring.weekthree.dto.PlanGetResponseDto;
+import com.spring.weekthree.dto.PlanRequestDto;
+import com.spring.weekthree.dto.PlanResponseDto;
 
 public interface PlanService {
-    PlanGetResponseDto save(PlanCreateRequestDto requestDto);
+    PlanResponseDto savePlan(PlanRequestDto requestDto);
 }

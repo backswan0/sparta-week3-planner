@@ -1,18 +1,17 @@
 package com.spring.weekthree.controller;
 
-
-import com.spring.weekthree.dto.PlanCreateRequestDto;
+import com.spring.weekthree.dto.PlanRequestDto;
+import com.spring.weekthree.dto.PlanResponseDto;
 import com.spring.weekthree.service.PlanService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/schedulers")
+@RequestMapping("/plans")
 public class PlanController {
     // 속성
     private final PlanService planService;
-
 
     // 생성자
     public PlanController(PlanService planService) {
@@ -22,9 +21,10 @@ public class PlanController {
 
     // 기능
     @PostMapping
-    public ResponseEntity<PlanCreateRequestDto> testPost (@RequestBody PlanCreateRequestDto requestDto) {
+    public ResponseEntity<PlanResponseDto> createPlan(@RequestBody PlanRequestDto requestDto) {
 
-        return new ResponseEntity<>(HttpStatus.CREATED
-        );
+        PlanResponseDto responseDto = planService.savePlan(requestDto);
+
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 }
