@@ -15,7 +15,7 @@ import java.util.Objects;
 
 /**
  * Create 완료
- * Read 완료 (목록 조회)
+ * Read 리팩토링 1차 완료 (if문 대신 스트림 사용, 목록 조회)
  * Read 완료 (단건 조회)
  * Update 완료 (PATCH)
  * Delete 완료
@@ -57,12 +57,12 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public List<PlanResponseDto> processPullList(String name, LocalDate updatedDate) {
 
-        return planRepository.pullAllAsList(name, updatedDate);
+        return planRepository.fetchAllPlans(name, updatedDate);
     }
 
     @Override
     public PlanResponseDto processPullEach(Long id) {
-        Plan planById = planRepository.pullEachById(id);
+        Plan planById = planRepository.fetchPlanById(id);
 
         if (planById == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id does not exist = " + id);
@@ -71,6 +71,15 @@ public class PlanServiceImpl implements PlanService {
         return new PlanResponseDto(planById);
     }
 
+    /**
+     * @param id          :
+     * @param name        :
+     * @param password    :
+     * @param plannedDate :
+     * @param title       :
+     * @param task        :
+     * @return new PlanResponseDto(planById)
+     */
     @Override
     public PlanResponseDto processUpdatePatch(
             Long id,
@@ -80,7 +89,7 @@ public class PlanServiceImpl implements PlanService {
             String title,
             String task
     ) {
-        Plan planById = planRepository.pullEachById(id);
+        Plan planById = planRepository.fetchPlanById(id);
 
         if (planById == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id does not exist = " + id);
@@ -89,23 +98,23 @@ public class PlanServiceImpl implements PlanService {
         if (!Objects.equals(password, planById.getPassword()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password does not match");
 
-        planById.edit(name, plannedDate, title, task);
+        planById.editPlanEntity(name, plannedDate, title, task);
 
         return new PlanResponseDto(planById);
     }
 
     @Override
     public void processDelete(Long id, String password) {
-            Plan planById = planRepository.pullEachById(id);
+        Plan planById = planRepository.fetchPlanById(id);
 
-            if (planById == null) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id does not exist = " + id);
-            }
+        if (planById == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id does not exist = " + id);
+        }
 
-            if (!Objects.equals(password, planById.getPassword())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password does not match");
-            }
+        if (!Objects.equals(password, planById.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password does not match");
+        }
 
-            planRepository.deletePlan(id);
+        planRepository.deletePlan(id);
     }
 }

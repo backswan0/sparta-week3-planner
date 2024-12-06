@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 /**
  * Create 완료
- * Read 완료 (목록 조회)
+ * Read 리팩토링 1차 완료 (if문 대신 스트림 사용, 목록 조회)
  * Read 완료 (단건 조회)
  * Update 완료 (PATCH)
  * Delete 완료
@@ -23,10 +23,6 @@ public class Plan {
     private LocalDateTime plannedDate;
     private String title;
     private String task;
-    /*
-    TODO plannedDate는 어떤 데이터 타입이 좋을까?
-     만약 LocalDateTime이라면 null 문제를 어떻게 해결할 수 있을까?
-     */
 
     // [1-b] 속성 중 사용자의 입력값을 저장하지 않는 필드
     private LocalDateTime createdDate;
@@ -59,7 +55,7 @@ public class Plan {
     }
 
     // [3] 기능
-    public void edit(
+    public void editPlanEntity(
             String name,
             LocalDateTime plannedDate,
             String title,

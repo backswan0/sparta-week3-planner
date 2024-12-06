@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Create 완료
- * Read 완료 (목록 조회)
+ * Read 리팩토링 1차 완료 (if문 대신 스트림 사용, 목록 조회)
  * Read 완료 (단건 조회)
  * Update 완료 (PATCH)
  * Delete 완료
@@ -31,8 +31,8 @@ public class PlanController {
 
     // [3] 기능
     @PostMapping
-    public ResponseEntity<PlanResponseDto> createPlan(@RequestBody PlanRequestDto requestDto) {
-        PlanResponseDto responseDto = planService.processSave(requestDto);
+    public ResponseEntity<PlanResponseDto> createPlan(@RequestBody PlanRequestDto dto) {
+        PlanResponseDto responseDto = planService.processSave(dto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
@@ -40,7 +40,10 @@ public class PlanController {
     public ResponseEntity<List<PlanResponseDto>> readAllPlans(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) LocalDate updatedDate
-            // 두 값은 필수가 아니게 설정 (boolean required() docs 참고)
+            /*
+            필수 값이 되지 않도록 각각 false로 설정
+            [참고] @RequestParam의 docs
+             */
     ) {
         List<PlanResponseDto> allPlans = planService.processPullList(name, updatedDate);
 
@@ -55,10 +58,11 @@ public class PlanController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<PlanResponseDto> updatePlanPatch(
+    public ResponseEntity<PlanResponseDto> updatePatch(
             @PathVariable Long id,
             @RequestBody PlanRequestDto requestDto
     ) {
+
         PlanResponseDto responseDto = planService.processUpdatePatch(
                 id,
                 requestDto.getName(),
@@ -72,7 +76,7 @@ public class PlanController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePlan (
+    public ResponseEntity<Void> deletePlan(
             @PathVariable Long id, @RequestParam String password
     ) {
         planService.processDelete(id, password);
