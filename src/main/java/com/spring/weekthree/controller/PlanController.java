@@ -13,7 +13,7 @@ import java.util.List;
  * Create 완료
  * Read 진행 중 (목록 조회)
  * Read 완료 (단건 조회)
- *
+ * Update 완료 (PATCH)
  *
  */
 
@@ -43,8 +43,25 @@ public class PlanController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PlanResponseDto> readPlanById (@PathVariable Long id) {
+    public ResponseEntity<PlanResponseDto> readPlanById(@PathVariable Long id) {
         PlanResponseDto responseDto = planService.processPullEach(id);
+
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<PlanResponseDto> editPatch(
+            @PathVariable Long id,
+            @RequestBody PlanRequestDto requestDto
+    ) {
+        PlanResponseDto responseDto = planService.processEditPatch(
+                id,
+                requestDto.getName(),
+                requestDto.getPassword(),
+                requestDto.getPlannedDate(),
+                requestDto.getTitle(),
+                requestDto.getTask()
+        );
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }

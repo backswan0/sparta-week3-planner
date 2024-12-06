@@ -8,13 +8,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Create 완료
  * Read 진행 중 (목록 조회)
  * Read 완료 (단건 조회)
- *
+ * Update 완료 (PATCH)
  *
  */
 
@@ -71,6 +73,29 @@ public class PlanServiceImpl implements PlanService {
         if (planById == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id does not exist = " + id);
         }
+
+        return new PlanResponseDto(planById);
+    }
+
+    @Override
+    public PlanResponseDto processEditPatch(
+            Long id,
+            String name,
+            String password,
+            LocalDateTime plannedDate,
+            String title,
+            String task
+    ) {
+        Plan planById = planRepository.pullEachById(id);
+
+        if (planById == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id does not exist = " + id);
+        }
+
+        if (!Objects.equals(password, planById.getPassword()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password does not match");
+
+        planById.edit(name, plannedDate, title, task);
 
         return new PlanResponseDto(planById);
     }

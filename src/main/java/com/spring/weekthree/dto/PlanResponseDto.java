@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * Create 완료
  * Read 진행 중 (목록 조회)
  * Read 완료 (단건 조회)
- *
+ * Update 완료 (PATCH)
  *
  */
 
@@ -23,7 +23,7 @@ public class PlanResponseDto {
     private String task;
 
     private LocalDateTime createdDate;
-    private LocalDateTime UpdatedDate;
+    private LocalDateTime updatedDate;
 
     // [2] 생성자
     public PlanResponseDto(Plan plan) {
@@ -34,7 +34,7 @@ public class PlanResponseDto {
         this.task = plan.getTask();
 
         this.createdDate = plan.getCreatedDate();
-        this.UpdatedDate = plan.getCreatedDate();
+        this.updatedDate = plan.getUpdatedDate();
     }
     // [3] 기능
 }
