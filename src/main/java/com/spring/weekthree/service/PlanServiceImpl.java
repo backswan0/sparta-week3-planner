@@ -8,16 +8,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * Create 완료
- * Read 진행 중 (목록 조회)
+ * Read 완료 (목록 조회)
  * Read 완료 (단건 조회)
  * Update 완료 (PATCH)
- *
+ * Delete 완료
  */
 
 @Service
@@ -47,23 +48,16 @@ public class PlanServiceImpl implements PlanService {
         return new PlanResponseDto(savedPlan);
          /*
          TODO 실습에서는 아래와 같이 했는데 똑같이 적용하지 못했다. 뭐가 문제일까?
-          return memoRepository.saveMemo(memo);
+          정답: 반환하는 데이터 타입이 달라서 안 됨
+           return memoRepository.saveMemo(memo);
+            정답: return new PlanResponseDto(planRepository.save(plan));
           */
-
     }
 
     @Override
-    public List<PlanResponseDto> processPullList() {
+    public List<PlanResponseDto> processPullList(String name, LocalDate updatedDate) {
 
-        return planRepository.pullAllAsList();
-        /*
-        TODO
-         [수정 전]
-         List<PlanResponseDto> allPlans = planRepository.pullAllPlans();
-         return allPlans;
-         [고민]
-         어떤 형태가 비즈니스 로직이 더 한 눈에 잘 들어올까?
-         */
+        return planRepository.pullAllAsList(name, updatedDate);
     }
 
     @Override
@@ -78,7 +72,7 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public PlanResponseDto processEditPatch(
+    public PlanResponseDto processUpdatePatch(
             Long id,
             String name,
             String password,
@@ -98,5 +92,20 @@ public class PlanServiceImpl implements PlanService {
         planById.edit(name, plannedDate, title, task);
 
         return new PlanResponseDto(planById);
+    }
+
+    @Override
+    public void processDelete(Long id, String password) {
+            Plan planById = planRepository.pullEachById(id);
+
+            if (planById == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id does not exist = " + id);
+            }
+
+            if (!Objects.equals(password, planById.getPassword())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password does not match");
+            }
+
+            planRepository.deletePlan(id);
     }
 }

@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 
 /**
  * Create 완료
- * Read 진행 중 (목록 조회)
+ * Read 완료 (목록 조회)
  * Read 완료 (단건 조회)
  * Update 완료 (PATCH)
- *
+ * Delete 완료
  */
 
 @Getter

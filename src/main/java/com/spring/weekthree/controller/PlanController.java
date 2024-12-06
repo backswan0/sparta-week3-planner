@@ -7,14 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
  * Create 완료
- * Read 진행 중 (목록 조회)
+ * Read 완료 (목록 조회)
  * Read 완료 (단건 조회)
  * Update 완료 (PATCH)
- *
+ * Delete 완료
  */
 
 @RestController
@@ -36,8 +37,12 @@ public class PlanController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PlanResponseDto>> readAllPlans() {
-        List<PlanResponseDto> allPlans = planService.processPullList();
+    public ResponseEntity<List<PlanResponseDto>> readAllPlans(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) LocalDate updatedDate
+            // 두 값은 필수가 아니게 설정 (boolean required() docs 참고)
+    ) {
+        List<PlanResponseDto> allPlans = planService.processPullList(name, updatedDate);
 
         return new ResponseEntity<>(allPlans, HttpStatus.OK);
     }
@@ -50,11 +55,11 @@ public class PlanController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<PlanResponseDto> editPatch(
+    public ResponseEntity<PlanResponseDto> updatePlanPatch(
             @PathVariable Long id,
             @RequestBody PlanRequestDto requestDto
     ) {
-        PlanResponseDto responseDto = planService.processEditPatch(
+        PlanResponseDto responseDto = planService.processUpdatePatch(
                 id,
                 requestDto.getName(),
                 requestDto.getPassword(),
@@ -64,5 +69,14 @@ public class PlanController {
         );
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePlan (
+            @PathVariable Long id, @RequestParam String password
+    ) {
+        planService.processDelete(id, password);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
