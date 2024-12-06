@@ -4,14 +4,16 @@ import com.spring.weekthree.dto.PlanRequestDto;
 import com.spring.weekthree.dto.PlanResponseDto;
 import com.spring.weekthree.entity.Plan;
 import com.spring.weekthree.repository.PlanRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 /**
  * Create 완료
- * Read 완료 (목록 조회)
- *
+ * Read 진행 중 (목록 조회)
+ * Read 완료 (단건 조회)
  *
  *
  */
@@ -28,7 +30,7 @@ public class PlanServiceImpl implements PlanService {
 
     // [3] 기능
     @Override
-    public PlanResponseDto processSaveInService(PlanRequestDto requestDto) {
+    public PlanResponseDto processSave(PlanRequestDto requestDto) {
 
         Plan plan = new Plan(
                 requestDto.getName(),
@@ -38,7 +40,7 @@ public class PlanServiceImpl implements PlanService {
                 requestDto.getTask()
         );
 
-        Plan savedPlan = planRepository.saveEachPlan(plan);
+        Plan savedPlan = planRepository.save(plan);
 
         return new PlanResponseDto(savedPlan);
          /*
@@ -49,9 +51,9 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public List<PlanResponseDto> processViewService() {
+    public List<PlanResponseDto> processPullList() {
 
-        return planRepository.pullAllPlans();
+        return planRepository.pullAllAsList();
         /*
         TODO
          [수정 전]
@@ -60,5 +62,16 @@ public class PlanServiceImpl implements PlanService {
          [고민]
          어떤 형태가 비즈니스 로직이 더 한 눈에 잘 들어올까?
          */
+    }
+
+    @Override
+    public PlanResponseDto processPullEach(Long id) {
+        Plan planById = planRepository.pullEachById(id);
+
+        if (planById == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id does not exist = " + id);
+        }
+
+        return new PlanResponseDto(planById);
     }
 }

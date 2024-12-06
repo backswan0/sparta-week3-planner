@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * Create 완료
- * Read 완료 (목록 조회)
- *
+ * Read 진행 중 (목록 조회)
+ * Read 완료 (단건 조회)
  *
  *
  */
@@ -31,14 +31,21 @@ public class PlanController {
     // [3] 기능
     @PostMapping
     public ResponseEntity<PlanResponseDto> createPlan(@RequestBody PlanRequestDto requestDto) {
-        PlanResponseDto responseDto = planService.processSaveInService(requestDto);
+        PlanResponseDto responseDto = planService.processSave(requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<PlanResponseDto>> readAllPlans() {
-        List<PlanResponseDto> allPlans = planService.processViewService();
+        List<PlanResponseDto> allPlans = planService.processPullList();
 
         return new ResponseEntity<>(allPlans, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PlanResponseDto> readPlanById (@PathVariable Long id) {
+        PlanResponseDto responseDto = planService.processPullEach(id);
+
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

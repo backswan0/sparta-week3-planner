@@ -8,8 +8,8 @@ import java.util.*;
 
 /**
  * Create 완료
- * Read 완료 (목록 조회)
- *
+ * Read 진행 중 (목록 조회)
+ * Read 완료 (단건 조회)
  *
  *
  */
@@ -23,7 +23,7 @@ public class PlanRepositoryImpl implements PlanRepository {
 
     // [3] 기능
     @Override
-    public Plan saveEachPlan(Plan plan) {
+    public Plan save(Plan plan) {
         Long planId = planList.isEmpty() ? 1 : Collections.max(planList.keySet()) + 1;
 
         plan.setId(planId);
@@ -34,7 +34,7 @@ public class PlanRepositoryImpl implements PlanRepository {
     }
 
     @Override
-    public List<PlanResponseDto> pullAllPlans() {
+    public List<PlanResponseDto> pullAllAsList() {
         List<PlanResponseDto> allPlans = new ArrayList<>();
 
         for (Plan plan : planList.values()) {
@@ -43,6 +43,10 @@ public class PlanRepositoryImpl implements PlanRepository {
         }
 
         return allPlans;
-        // TODO 오버로드한 후에 List.of()로 적혔는지 확인하고 고치자.
+    }
+
+    @Override
+    public Plan pullEachById(Long id) {
+        return planList.get(id);
     }
 }
