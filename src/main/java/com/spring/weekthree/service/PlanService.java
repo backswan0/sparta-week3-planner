@@ -4,7 +4,6 @@ import com.spring.weekthree.dto.PlanRequestDto;
 import com.spring.weekthree.dto.PlanResponseDto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -18,9 +17,9 @@ import java.util.List;
 public interface PlanService {
     PlanResponseDto processSave(PlanRequestDto requestDto);
 
-    List<PlanResponseDto> processPullList(String name, LocalDate updatedDate);
+    List<PlanResponseDto> processFetchList(String name, LocalDate updatedDate);
 
-    PlanResponseDto processPullEach(Long id);
+    PlanResponseDto processFetchEach(Long id);
 
     /**
      * @param id          :
@@ -35,7 +34,7 @@ public interface PlanService {
             Long id,
             String name,
             String password,
-            LocalDateTime plannedDate,
+            LocalDate plannedDate,
             String title,
             String task
     );

@@ -21,15 +21,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/plans")
 public class PlanController {
-    // [1] 속성
+    // 속성
     private final PlanService planService;
 
-    // [2] 생성자
+    // 생성자
     public PlanController(PlanService planService) {
         this.planService = planService;
     }
 
-    // [3] 기능
+    // 기능
     @PostMapping
     public ResponseEntity<PlanResponseDto> createPlan(@RequestBody PlanRequestDto dto) {
         PlanResponseDto responseDto = planService.processSave(dto);
@@ -40,19 +40,16 @@ public class PlanController {
     public ResponseEntity<List<PlanResponseDto>> readAllPlans(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) LocalDate updatedDate
-            /*
-            필수 값이 되지 않도록 각각 false로 설정
-            [참고] @RequestParam의 docs
-             */
+            // 필수 값이 되지 않도록 각각 false로 설정
     ) {
-        List<PlanResponseDto> allPlans = planService.processPullList(name, updatedDate);
+        List<PlanResponseDto> allPlans = planService.processFetchList(name, updatedDate);
 
         return new ResponseEntity<>(allPlans, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PlanResponseDto> readPlanById(@PathVariable Long id) {
-        PlanResponseDto responseDto = planService.processPullEach(id);
+        PlanResponseDto responseDto = planService.processFetchEach(id);
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -80,7 +77,6 @@ public class PlanController {
             @PathVariable Long id, @RequestParam String password
     ) {
         planService.processDelete(id, password);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

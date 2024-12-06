@@ -2,7 +2,9 @@ package com.spring.weekthree.dto;
 
 import com.spring.weekthree.entity.Plan;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -13,19 +15,19 @@ import java.time.LocalDateTime;
  * Delete 완료
  */
 
+@NoArgsConstructor
 @Getter
 public class PlanResponseDto {
-    // [1] 속성
+    // 속성
     private long id;
     private String name;
-    private LocalDateTime plannedDate;
+    private LocalDate plannedDate;
     private String title;
     private String task;
+    private LocalDateTime createdDateTime;
+    private LocalDateTime updatedDateTime;
 
-    private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
-
-    // [2] 생성자
+    // 생성자
     public PlanResponseDto(Plan plan) {
         this.id = plan.getId();
         this.name = plan.getName();
@@ -33,8 +35,8 @@ public class PlanResponseDto {
         this.title = plan.getTitle();
         this.task = plan.getTask();
 
-        this.createdDate = plan.getCreatedDate();
-        this.updatedDate = plan.getUpdatedDate();
+        this.createdDateTime = plan.getCreatedDateTime();
+        this.updatedDateTime = plan.getUpdatedDateTime();
     }
-    // [3] 기능
+    // 기능
 }

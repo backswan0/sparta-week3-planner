@@ -1,8 +1,10 @@
 package com.spring.weekthree.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -13,24 +15,29 @@ import java.time.LocalDateTime;
  * Delete 완료
  */
 
+@NoArgsConstructor
 @Getter
 public class Plan {
-    // [1-a] 속성 중 사용자의 입력값을 저장하는 필드
+    // 속성 - 사용자의 입력값을 저장하는 필드
     @Setter
     private Long id;
     private String name;
     private String password;
-    private LocalDateTime plannedDate;
+    private LocalDate plannedDate;
+    /*
+    [수정 전] LocalDateTime
+    [수정 후] LocalDate
+    [바꾼 이유] 일정 날짜에 시간은 필요하지 않으므로, 즉 불필요한 데이터를 받지 않도록 수정함
+     */
     private String title;
     private String task;
 
-    // [1-b] 속성 중 사용자의 입력값을 저장하지 않는 필드
-    private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
+    // 속성 - 사용자의 입력값을 저장하지 않는 필드
+    private LocalDateTime createdDateTime;
+    private LocalDateTime updatedDateTime;
 
     /**
-     * [2] 생성자
-     *
+     * 생성자
      * @param name        : 사용자 이름
      * @param password    : 사용자 비밀번호
      * @param plannedDate : 사용자가 입력한 일정 날짜
@@ -40,7 +47,7 @@ public class Plan {
     public Plan(
             String name,
             String password,
-            LocalDateTime plannedDate,
+            LocalDate plannedDate,
             String title,
             String task
     ) {
@@ -50,14 +57,20 @@ public class Plan {
         this.title = title;
         this.task = task;
 
-        this.createdDate = LocalDateTime.now();
-        this.updatedDate = LocalDateTime.now();
+        this.createdDateTime = LocalDateTime.now();
+        this.updatedDateTime = LocalDateTime.now();
     }
 
-    // [3] 기능
+    /**
+     * 기능
+     * @param name        :
+     * @param plannedDate :
+     * @param title       :
+     * @param task        :
+     */
     public void editPlanEntity(
             String name,
-            LocalDateTime plannedDate,
+            LocalDate plannedDate,
             String title,
             String task
     ) {
@@ -66,6 +79,6 @@ public class Plan {
         this.title = title;
         this.task = task;
 
-        this.updatedDate = LocalDateTime.now();
+        this.updatedDateTime = LocalDateTime.now();
     }
 }

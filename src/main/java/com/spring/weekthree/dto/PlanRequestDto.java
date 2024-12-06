@@ -1,8 +1,9 @@
 package com.spring.weekthree.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * Create 완료
@@ -12,16 +13,17 @@ import java.time.LocalDateTime;
  * Delete 완료
  */
 
+@NoArgsConstructor
 @Getter
 public class PlanRequestDto {
-    // [1] 속성
+    // 속성
     private String name;
     private String password;
-    private LocalDateTime plannedDate;
+    private LocalDate plannedDate;
     private String title;
     private String task;
 
-    // [2] 생성자
+    // 생성자
 
-    // [3] 기능
+    // 기능
 }

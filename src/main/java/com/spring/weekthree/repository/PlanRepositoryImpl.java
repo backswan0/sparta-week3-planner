@@ -53,7 +53,7 @@ public class PlanRepositoryImpl implements PlanRepository {
         }
         if (updatedDate != null) {
             allPlans = allPlans.filter(y -> {
-                        return y.getUpdatedDate().toLocalDate().equals(updatedDate);
+                        return y.getUpdatedDateTime().toLocalDate().equals(updatedDate);
                     }
             );
             /*

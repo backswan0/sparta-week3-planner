@@ -20,7 +20,7 @@ public interface PlanRepository {
     List<PlanResponseDto> fetchAllPlans(String name, LocalDate updatedDate);
     /*
     [수정 이유]
-    사전에서 fetch가 '(어디를 가서) 가지고 오다' 또는 '불러오다'라서 의미가 더 잘 보였다.
+    단어 fetch가 '(어디를 가서) 가지고 오다' 또는 '불러오다'라서 의미가 더 잘 보였다.
     또한, All에 이미 소문자 l이 두 개나 있어서 pullAllAsList는 각 단어가 눈에 잘 안 들어왔다.
     l이 없으면서 의미를 명확하게 전달하고자 pull 대신 동사 fetch를 사용했다.
      */

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,15 +22,15 @@ import java.util.Objects;
 
 @Service
 public class PlanServiceImpl implements PlanService {
-    // [1] 속성
+    // 속성
     private final PlanRepository planRepository;
 
-    // [2] 생성자
+    // 생성자
     public PlanServiceImpl(PlanRepository planRepository) {
         this.planRepository = planRepository;
     }
 
-    // [3] 기능
+    // 기능
     @Override
     public PlanResponseDto processSave(PlanRequestDto requestDto) {
 
@@ -55,13 +54,13 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public List<PlanResponseDto> processPullList(String name, LocalDate updatedDate) {
+    public List<PlanResponseDto> processFetchList(String name, LocalDate updatedDate) {
 
         return planRepository.fetchAllPlans(name, updatedDate);
     }
 
     @Override
-    public PlanResponseDto processPullEach(Long id) {
+    public PlanResponseDto processFetchEach(Long id) {
         Plan planById = planRepository.fetchPlanById(id);
 
         if (planById == null) {
@@ -85,7 +84,7 @@ public class PlanServiceImpl implements PlanService {
             Long id,
             String name,
             String password,
-            LocalDateTime plannedDate,
+            LocalDate plannedDate,
             String title,
             String task
     ) {
