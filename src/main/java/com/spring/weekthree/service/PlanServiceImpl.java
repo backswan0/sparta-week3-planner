@@ -42,15 +42,18 @@ public class PlanServiceImpl implements PlanService {
                 requestDto.getTask()
         );
 
+        return planRepository.save(plan);
+        /*
+        [수정 전]
         Plan savedPlan = planRepository.save(plan);
-
         return new PlanResponseDto(savedPlan);
-         /*
-         TODO 실습에서는 아래와 같이 했는데 똑같이 적용하지 못했다. 뭐가 문제일까?
-          정답: 반환하는 데이터 타입이 달라서 안 됨
-           return memoRepository.saveMemo(memo);
-            정답: return new PlanResponseDto(planRepository.save(plan));
-          */
+        [수정 후 1]
+        PlanResponseDto savedPlan = planRepository.save(plan);
+        return new PlanResponseDto(savedPlan);
+        [수정 후 2]
+        return planRepository.save(plan);
+        TODO 갈아끼울 때 아예 PlanServiceImpl을 건드리지 않는 방법은 없을까?
+         */
     }
 
     @Override
