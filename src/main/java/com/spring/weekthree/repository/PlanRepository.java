@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 public interface PlanRepository {
-    Plan save(Plan plan);
+    PlanResponseDto save(Plan plan);
 
     List<PlanResponseDto> fetchAllPlans(String name, LocalDate updatedDate);
     /*
