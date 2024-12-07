@@ -1,8 +1,8 @@
 package com.spring.weekthree.dto;
 
 import com.spring.weekthree.entity.Plan;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * Delete 완료
  */
 
-@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class PlanResponseDto {
     // 속성
