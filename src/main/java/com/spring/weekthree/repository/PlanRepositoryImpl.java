@@ -16,7 +16,7 @@ import java.util.stream.Stream;
  * Delete 완료
  */
 
-@Repository
+// @Repository
 public class PlanRepositoryImpl implements PlanRepository {
     // [1] 속성
     private final Map<Long, Plan> planList = new HashMap<>();
