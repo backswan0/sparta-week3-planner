@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Getter
 public class Plan {
     // 속성 - 사용자의 입력값을 저장하는 필드
-    @Setter
+    // @Setter
     private Long id;
     private String name;
     private String password;
