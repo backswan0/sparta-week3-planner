@@ -26,7 +26,7 @@ import java.util.Optional;
  * JDBC - Create 리팩토링 완료
  * JDBC - Read 리팩토링 중 (목록 조회)
  * JDBC - Read 리팩토링 완료 (단건 조회)
- *
+ * JDBC - Update 리팩토링 1차 완료 (일부가 null일 때 예외 처리 전?)
  *
  */
 
@@ -85,6 +85,23 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     public Optional<Plan> fetchPlanById(Long id) {
         List<Plan> result = jdbcTemplate.query("SELECT * FROM planner WHERE id = ?", plannerRowMapperEach(), id);
         return result.stream().findAny();
+    }
+
+    @Override
+    public int updatePatchInRepository(
+            Long id,
+            String name,
+            LocalDate plannedDate,
+            String title,
+            String task
+    ) {
+        return jdbcTemplate.update(
+                "UPDATE planner SET name = ?, plannedDate = ?, title = ?, task = ? WHERE id = ?",
+                name,
+                plannedDate,
+                title,
+                task,
+                id);
     }
 
     @Override

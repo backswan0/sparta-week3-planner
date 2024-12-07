@@ -22,7 +22,7 @@ import java.util.Optional;
  * JDBC - Create 리팩토링 완료
  * JDBC - Read 리팩토링 중 (목록 조회)
  * JDBC - Read 리팩토링 완료 (단건 조회)
- *
+ * JDBC - Update 리팩토링 1차 완료 (일부가 null일 때 예외 처리 전?)
  *
  */
 
@@ -100,19 +100,18 @@ public class PlanServiceImpl implements PlanService {
             String title,
             String task
     ) {
-//        Plan planById = planRepository.fetchPlanById(id);
-//
-//        if (planById == null) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id does not exist = " + id);
-//        }
-//
-//        if (!Objects.equals(password, planById.getPassword()))
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password does not match");
-//
-//        planById.editPlanEntity(name, plannedDate, title, task);
-//
-//        return new PlanResponseDto(planById);
-    return null;
+
+        Optional<Plan> optionalPlan = planRepository.fetchPlanById(id);
+
+        if (!Objects.equals(password, optionalPlan.get().getPassword()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password does not match");
+
+        int updatedRow = planRepository.updatePatchInRepository(id, name, plannedDate, title, task);
+
+        if (updatedRow == 0) {
+           throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id does not exist = " + id);
+        }
+        return new PlanResponseDto(optionalPlan.get());
     }
 
     @Override

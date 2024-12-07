@@ -16,7 +16,7 @@ import java.util.Optional;
  * JDBC - Create 리팩토링 완료
  * JDBC - Read 리팩토링 중 (목록 조회)
  * JDBC - Read 리팩토링 완료 (단건 조회)
- *
+ * JDBC - Update 리팩토링 1차 완료 (일부가 null일 때 예외 처리 전?)
  *
  */
 
@@ -32,6 +32,14 @@ public interface PlanRepository {
      */
 
     Optional<Plan> fetchPlanById(Long id);
+
+    int updatePatchInRepository (
+            Long id,
+            String name,
+            LocalDate plannedDate,
+            String title,
+            String task
+    );
 
     void deletePlan (Long id);
 }
