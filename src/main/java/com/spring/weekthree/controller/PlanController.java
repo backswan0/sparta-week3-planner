@@ -19,7 +19,7 @@ import java.util.List;
  * JDBC - Create 리팩토링 완료
  * JDBC - Read 리팩토링 중 (목록 조회)
  * JDBC - Read 리팩토링 완료 (단건 조회)
- * JDBC - Update 리팩토링 1차 완료 (일부가 null일 때 예외 처리 전?)
+ * JDBC - Update 리팩토링 2차 완료 (수정 날짜 바뀌도록 수정, 일부가 null일 때 예외 처리 전)
  *
  */
 
