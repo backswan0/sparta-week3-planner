@@ -16,6 +16,11 @@ import java.util.List;
  * Read 완료 (단건 조회)
  * Update 완료 (PATCH)
  * Delete 완료
+ * JDBC - Create 리팩토링 완료
+ * JDBC - Read 리팩토링 중 (목록 조회)
+ * JDBC - Read 리팩토링 완료 (단건 조회)
+ *
+ *
  */
 
 @RestController

@@ -1,8 +1,7 @@
 package com.spring.weekthree.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,9 +12,14 @@ import java.time.LocalDateTime;
  * Read 완료 (단건 조회)
  * Update 완료 (PATCH)
  * Delete 완료
+ * JDBC - Create 리팩토링 완료
+ * JDBC - Read 리팩토링 중 (목록 조회)
+ * JDBC - Read 리팩토링 완료 (단건 조회)
+ *
+ *
  */
 
-@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class Plan {
     // 속성 - 사용자의 입력값을 저장하는 필드
@@ -38,6 +42,7 @@ public class Plan {
 
     /**
      * 생성자
+     *
      * @param name        : 사용자 이름
      * @param password    : 사용자 비밀번호
      * @param plannedDate : 사용자가 입력한 일정 날짜
@@ -63,6 +68,7 @@ public class Plan {
 
     /**
      * 기능
+     *
      * @param name        :
      * @param plannedDate :
      * @param title       :

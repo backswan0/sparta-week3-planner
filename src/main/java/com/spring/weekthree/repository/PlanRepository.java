@@ -5,6 +5,7 @@ import com.spring.weekthree.entity.Plan;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Create 완료
@@ -12,6 +13,11 @@ import java.util.List;
  * Read 완료 (단건 조회)
  * Update 완료 (PATCH)
  * Delete 완료
+ * JDBC - Create 리팩토링 완료
+ * JDBC - Read 리팩토링 중 (목록 조회)
+ * JDBC - Read 리팩토링 완료 (단건 조회)
+ *
+ *
  */
 
 public interface PlanRepository {
@@ -25,7 +31,7 @@ public interface PlanRepository {
     l이 없으면서 의미를 명확하게 전달하고자 pull 대신 동사 fetch를 사용했다.
      */
 
-    Plan fetchPlanById(Long id);
+    Optional<Plan> fetchPlanById(Long id);
 
     void deletePlan (Long id);
 }

@@ -15,6 +15,20 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
+/**
+ * Create 완료
+ * Read 리팩토링 1차 완료 (if문 대신 스트림 사용, 목록 조회)
+ * Read 완료 (단건 조회)
+ * Update 완료 (PATCH)
+ * Delete 완료
+ * JDBC - Create 리팩토링 완료
+ * JDBC - Read 리팩토링 중 (목록 조회)
+ * JDBC - Read 리팩토링 완료 (단건 조회)
+ *
+ *
+ */
 
 // @Repository 어노테이션을 절대 잊지 말자!!!
 @Repository
@@ -49,7 +63,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
         /*
-        작성하면 빨간 줄이 뜰 텐다.
+        작성하면 빨간 줄이 뜬다.
         PlanResponseDto 클래스에 가서 @AllArgsConstructor를 사용해야 빨간 줄이 사라진다.
          */
         return new PlanResponseDto(
@@ -68,8 +82,9 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     }
 
     @Override
-    public Plan fetchPlanById(Long id) {
-        return null;
+    public Optional<Plan> fetchPlanById(Long id) {
+        List<Plan> result = jdbcTemplate.query("SELECT * FROM planner WHERE id = ?", plannerRowMapperEach(), id);
+        return result.stream().findAny();
     }
 
     @Override
@@ -77,7 +92,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
 
     }
 
-    private RowMapper<PlanResponseDto> plannerRowMapper () {
+    private RowMapper<PlanResponseDto> plannerRowMapper() {
         // return new까지만 입력해도 RowMapper가 나오는데, 그걸 입력하면 자동 생성된다.
         return new RowMapper<PlanResponseDto>() {
             @Override
@@ -85,6 +100,24 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
                 return new PlanResponseDto(
                         rs.getLong("id"),
                         rs.getString("name"),
+                        rs.getDate("plannedDate").toLocalDate(),
+                        rs.getString("title"),
+                        rs.getString("task"),
+                        rs.getTimestamp("createdDateTime").toLocalDateTime(),
+                        rs.getTimestamp("updatedDateTime").toLocalDateTime()
+                );
+            }
+        };
+    }
+
+    private RowMapper<Plan> plannerRowMapperEach() {
+        return new RowMapper<Plan>() {
+            @Override
+            public Plan mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new Plan(
+                        rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getString("password"),
                         rs.getDate("plannedDate").toLocalDate(),
                         rs.getString("title"),
                         rs.getString("task"),
