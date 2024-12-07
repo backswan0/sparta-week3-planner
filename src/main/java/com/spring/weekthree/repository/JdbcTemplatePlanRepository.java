@@ -3,11 +3,14 @@ package com.spring.weekthree.repository;
 import com.spring.weekthree.dto.PlanResponseDto;
 import com.spring.weekthree.entity.Plan;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +64,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
 
     @Override
     public List<PlanResponseDto> fetchAllPlans(String name, LocalDate updatedDate) {
-        return List.of();
+        return jdbcTemplate.query("SELECT * FROM planner", plannerRowMapper());
     }
 
     @Override
@@ -72,5 +75,23 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     @Override
     public void deletePlan(Long id) {
 
+    }
+
+    private RowMapper<PlanResponseDto> plannerRowMapper () {
+        // return new까지만 입력해도 RowMapper가 나오는데, 그걸 입력하면 자동 생성된다.
+        return new RowMapper<PlanResponseDto>() {
+            @Override
+            public PlanResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new PlanResponseDto(
+                        rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getDate("plannedDate").toLocalDate(),
+                        rs.getString("title"),
+                        rs.getString("task"),
+                        rs.getTimestamp("createdDateTime").toLocalDateTime(),
+                        rs.getTimestamp("updatedDateTime").toLocalDateTime()
+                );
+            }
+        };
     }
 }
