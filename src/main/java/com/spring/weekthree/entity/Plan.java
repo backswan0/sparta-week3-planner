@@ -9,17 +9,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 public class Plan {
-    // 속성 - 사용자의 입력값을 저장하는 필드
+    // 속성
     private Long id;
     private String name;
     private String password;
     private LocalDate plannedDate;
-    // 일정 날짜에 시간은 필요하지 않으므로 LocalDateTime에서 변경
-
     private String title;
     private String task;
-
-    // 속성 - 사용자의 입력값을 저장하지 않는 필드
     private LocalDateTime createdDateTime;
     private LocalDateTime updatedDateTime;
 

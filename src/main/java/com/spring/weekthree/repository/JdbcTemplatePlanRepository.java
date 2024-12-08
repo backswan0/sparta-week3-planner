@@ -1,6 +1,6 @@
 package com.spring.weekthree.repository;
 
-import com.spring.weekthree.dto.PlanResponseDto;
+import com.spring.weekthree.dto.responsedto.PlanResponseDto;
 import com.spring.weekthree.entity.Plan;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,7 +33,9 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     @Override
     public PlanResponseDto save(Plan plan) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("planner").usingGeneratedKeyColumns("id");
+
+        jdbcInsert.withTableName("planner").
+                usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = new HashMap<>();
 
@@ -45,7 +47,9 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         parameters.put("createdDateTime", plan.getCreatedDateTime());
         parameters.put("updatedDateTime", plan.getUpdatedDateTime());
 
-        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
+        Number key = jdbcInsert.executeAndReturnKey(
+                new MapSqlParameterSource(parameters)
+        );
 
         return new PlanResponseDto(
                 key.longValue(),
@@ -58,11 +62,16 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     }
 
     @Override
-    public List<PlanResponseDto> fetchAllPlans(String name, LocalDate updatedDate) {
+    public List<PlanResponseDto> fetchAllPlans(
+            String name,
+            LocalDate updatedDate
+    ) {
         Stream<PlanResponseDto> allPlans = Stream.empty();
 
         if ((name != null) && (updatedDate != null)) {
+
             Date updatedDateSql = Date.valueOf(updatedDate);
+
             allPlans = jdbcTemplate.queryForStream(
                     "SELECT * FROM planner " +
                             "WHERE BINARY name = ? " +
@@ -96,7 +105,6 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
                     plannerRowMapper()
             );
         }
-
         return allPlans.collect(Collectors.toList());
     }
 
@@ -110,7 +118,8 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         );
         return result.stream()
                 .findAny()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
                         "Id does no exist id = " + id)
                 );
     }
@@ -141,7 +150,8 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
 
     @Override
     public void deletePlan(Long id) {
-        jdbcTemplate.update("DELETE FROM planner WHERE id = ?",
+        jdbcTemplate.update(
+                "DELETE FROM planner WHERE id = ?",
                 id
         );
     }

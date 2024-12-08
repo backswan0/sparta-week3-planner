@@ -1,13 +1,13 @@
 package com.spring.weekthree.service;
 
-import com.spring.weekthree.dto.PlanRequestDto;
-import com.spring.weekthree.dto.PlanResponseDto;
+import com.spring.weekthree.dto.requestdto.CreatePlanRequestDto;
+import com.spring.weekthree.dto.responsedto.PlanResponseDto;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface PlanService {
-    PlanResponseDto processSave(PlanRequestDto requestDto);
+    PlanResponseDto processSave(CreatePlanRequestDto requestDto);
 
     List<PlanResponseDto> processFetchList(String name, LocalDate updatedDate);
 
