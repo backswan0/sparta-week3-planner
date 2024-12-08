@@ -17,6 +17,8 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Repository
 public class JdbcTemplatePlanRepository implements PlanRepository {
@@ -56,11 +58,35 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
 
     @Override
     public List<PlanResponseDto> fetchAllPlans(String name, LocalDate updatedDate) {
-        return jdbcTemplate.query("SELECT * FROM planner", plannerRowMapper());
+        Stream<PlanResponseDto> allPlans = Stream.empty();
+        //  Stream<PlanResponseDto> allPlans = Stream.<PlanResponseDto>builder().build();
+
+        if (name != null) {
+
+            allPlans = jdbcTemplate.queryForStream("SELECT * FROM planner " +
+                            "WHERE BINARY name = ? " +
+                            "ORDER BY updatedDateTime DESC",
+                    plannerRowMapper(),
+                    name
+            );
+            /*
+            BINARY
+            "SELECT * FROM planner WHERE name = ? COLLATE Latin1_General_BIN"
+            이건 왜 또 500 에러가 떴을까....?
+             */
+        } else {
+            allPlans = jdbcTemplate.queryForStream("SELECT * FROM planner " +
+                            "ORDER BY updatedDateTime DESC",
+                    plannerRowMapper());
+        }
+
+        return allPlans.collect(Collectors.toList());
+        // return allPlans.toList();
     }
 
     @Override
     public Plan fetchPlanById0rElseThrow(Long id) {
+
         List<Plan> result = jdbcTemplate.query(
                 "SELECT * FROM planner WHERE id =?",
                 plannerRowMapperEach(),
@@ -94,7 +120,6 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
                 task,
                 id);
     }
-
 
     @Override
     public void deletePlan(Long id) {
