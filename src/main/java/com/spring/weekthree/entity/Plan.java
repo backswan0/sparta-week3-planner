@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * JDBC - Create 리팩토링 완료
  * JDBC - Read 리팩토링 중 (목록 조회)
  * JDBC - Read 리팩토링 완료 (예외처리 추가 수정, 단건 조회)
- * JDBC - Update 리팩토링 2차 완료 (수정 날짜 바뀌도록 수정, 일부가 null일 때 예외 처리 전)
+ * JDBC - Update 리팩토링 3차 완료 (클린 업 완료, 수정 날짜 바뀌도록 수정, 일부가 null일 때 예외 처리 전)
  * JDBC - Delete 리팩토링 완료
  */
 
@@ -23,16 +23,12 @@ import java.time.LocalDateTime;
 @Getter
 public class Plan {
     // 속성 - 사용자의 입력값을 저장하는 필드
-    // @Setter
     private Long id;
     private String name;
     private String password;
     private LocalDate plannedDate;
-    /*
-    [수정 전] LocalDateTime
-    [수정 후] LocalDate
-    [바꾼 이유] 일정 날짜에 시간은 필요하지 않으므로, 즉 불필요한 데이터를 받지 않도록 수정함
-     */
+    // 일정 날짜에 시간은 필요하지 않으므로 LocalDateTime에서 변경
+
     private String title;
     private String task;
 

@@ -11,7 +11,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Create 완료
@@ -22,7 +21,7 @@ import java.util.Optional;
  * JDBC - Create 리팩토링 완료
  * JDBC - Read 리팩토링 중 (목록 조회)
  * JDBC - Read 리팩토링 완료 (예외처리 추가 수정, 단건 조회)
- * JDBC - Update 리팩토링 2차 완료 (수정 날짜 바뀌도록 수정, 일부가 null일 때 예외 처리 전)
+ * JDBC - Update 리팩토링 3차 완료 (클린 업 완료, 수정 날짜 바뀌도록 수정, 일부가 null일 때 예외 처리 전)
  * JDBC - Delete 리팩토링 완료
  */
 
@@ -33,6 +32,7 @@ public class PlanServiceImpl implements PlanService {
 
     // 생성자
     public PlanServiceImpl(PlanRepository planRepository) {
+
         this.planRepository = planRepository;
     }
 
@@ -49,17 +49,7 @@ public class PlanServiceImpl implements PlanService {
         );
 
         return planRepository.save(plan);
-        /*
-        [수정 전]
-        Plan savedPlan = planRepository.save(plan);
-        return new PlanResponseDto(savedPlan);
-        [수정 후 1]
-        PlanResponseDto savedPlan = planRepository.save(plan);
-        return new PlanResponseDto(savedPlan);
-        [수정 후 2]
-        return planRepository.save(plan);
-        TODO 갈아끼울 때 아예 PlanServiceImpl을 건드리지 않는 방법은 없을까?
-         */
+        // TODO 갈아끼울 때 아예 PlanServiceImpl을 건드리지 않는 방법은 없을까?
     }
 
     @Override
@@ -93,32 +83,24 @@ public class PlanServiceImpl implements PlanService {
             String title,
             String task
     ) {
+        Plan plan = planRepository.fetchPlanById0rElseThrow(id);
 
-        Optional<Plan> optionalPlan = planRepository.fetchPlanById(id);
-
-        if (!Objects.equals(password, optionalPlan.get().getPassword()))
+        if (!Objects.equals(password, plan.getPassword()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password does not match");
 
-        int updatedRow = planRepository.updatePatchInRepository(id, name, plannedDate, title, task);
+        planRepository.updatePatchInRepository(id, name, plannedDate, title, task);
 
-        if (updatedRow == 0) {
-           throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id does not exist = " + id);
-        }
-        return new PlanResponseDto(optionalPlan.get());
+        return new PlanResponseDto(plan);
     }
 
     @Override
     public void processDelete(Long id, String password) {
 
-        Optional<Plan> optionalPlan = planRepository.fetchPlanById(id);
+        Plan plan = planRepository.fetchPlanById0rElseThrow(id);
 
-        if (!Objects.equals(password, optionalPlan.get().getPassword()))
+        if (!Objects.equals(password, plan.getPassword()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password does not match");
 
-        int deletedRow = planRepository.deletePlan(id);
-
-        if (deletedRow == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id does not exist = " + id);
-        }
+        planRepository.deletePlan(id);
     }
 }
