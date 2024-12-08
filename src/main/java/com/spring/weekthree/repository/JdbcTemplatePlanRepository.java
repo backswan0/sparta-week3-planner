@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.sql.DataSource;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -59,29 +60,44 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     @Override
     public List<PlanResponseDto> fetchAllPlans(String name, LocalDate updatedDate) {
         Stream<PlanResponseDto> allPlans = Stream.empty();
-        //  Stream<PlanResponseDto> allPlans = Stream.<PlanResponseDto>builder().build();
 
-        if (name != null) {
-
-            allPlans = jdbcTemplate.queryForStream("SELECT * FROM planner " +
+        if ((name != null) && (updatedDate != null)) {
+            Date updatedDateSql = Date.valueOf(updatedDate);
+            allPlans = jdbcTemplate.queryForStream(
+                    "SELECT * FROM planner " +
+                            "WHERE BINARY name = ? " +
+                            "AND DATE(updatedDateTime) = ? " +
+                            "ORDER BY updatedDateTime DESC",
+                    plannerRowMapper(),
+                    name,
+                    updatedDateSql
+            );
+        } else if (name != null) {
+            allPlans = jdbcTemplate.queryForStream(
+                    "SELECT * FROM planner " +
                             "WHERE BINARY name = ? " +
                             "ORDER BY updatedDateTime DESC",
                     plannerRowMapper(),
                     name
             );
-            /*
-            BINARY
-            "SELECT * FROM planner WHERE name = ? COLLATE Latin1_General_BIN"
-            이건 왜 또 500 에러가 떴을까....?
-             */
-        } else {
-            allPlans = jdbcTemplate.queryForStream("SELECT * FROM planner " +
+        } else if (updatedDate != null) {
+            Date updatedDateSql = Date.valueOf(updatedDate);
+            allPlans = jdbcTemplate.queryForStream(
+                    "SELECT * FROM planner " +
+                            "WHERE DATE(updatedDateTime) = ? " +
                             "ORDER BY updatedDateTime DESC",
-                    plannerRowMapper());
+                    plannerRowMapper(),
+                    updatedDateSql
+            );
+        } else {
+            allPlans = jdbcTemplate.queryForStream(
+                    "SELECT * FROM planner " +
+                            "ORDER BY updatedDateTime DESC",
+                    plannerRowMapper()
+            );
         }
 
         return allPlans.collect(Collectors.toList());
-        // return allPlans.toList();
     }
 
     @Override
@@ -95,7 +111,8 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         return result.stream()
                 .findAny()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Id does no exist id = " + id));
+                        "Id does no exist id = " + id)
+                );
     }
 
     @Override
@@ -118,12 +135,15 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
                 plannedDate,
                 title,
                 task,
-                id);
+                id
+        );
     }
 
     @Override
     public void deletePlan(Long id) {
-        jdbcTemplate.update("DELETE FROM planner WHERE id = ?", id);
+        jdbcTemplate.update("DELETE FROM planner WHERE id = ?",
+                id
+        );
     }
 
     private RowMapper<PlanResponseDto> plannerRowMapper() {
