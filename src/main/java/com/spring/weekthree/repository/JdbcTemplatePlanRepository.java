@@ -2,11 +2,13 @@ package com.spring.weekthree.repository;
 
 import com.spring.weekthree.dto.PlanResponseDto;
 import com.spring.weekthree.entity.Plan;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -25,7 +27,7 @@ import java.util.Optional;
  * Delete 완료
  * JDBC - Create 리팩토링 완료
  * JDBC - Read 리팩토링 중 (목록 조회)
- * JDBC - Read 리팩토링 완료 (단건 조회)
+ * JDBC - Read 리팩토링 완료 (예외처리 추가 수정, 단건 조회)
  * JDBC - Update 리팩토링 2차 완료 (수정 날짜 바뀌도록 수정, 일부가 null일 때 예외 처리 전)
  * JDBC - Delete 리팩토링 완료
  */
@@ -85,6 +87,18 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     public Optional<Plan> fetchPlanById(Long id) {
         List<Plan> result = jdbcTemplate.query("SELECT * FROM planner WHERE id = ?", plannerRowMapperEach(), id);
         return result.stream().findAny();
+    }
+
+    @Override
+    public Plan fetchPlanById0rElseThrow(Long id) {
+        List<Plan> result = jdbcTemplate.query(
+                "SELECT * FROM planner WHERE id =?",
+                plannerRowMapperEach(),
+                id
+        );
+        return result.stream()
+                .findAny()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id does no exist id = " + id));
     }
 
     @Override

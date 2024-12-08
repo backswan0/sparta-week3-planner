@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * Delete 완료
  * JDBC - Create 리팩토링 완료
  * JDBC - Read 리팩토링 중 (목록 조회)
- * JDBC - Read 리팩토링 완료 (단건 조회)
+ * JDBC - Read 리팩토링 완료 (예외처리 추가 수정, 단건 조회)
  * JDBC - Update 리팩토링 2차 완료 (수정 날짜 바뀌도록 수정, 일부가 null일 때 예외 처리 전)
  * JDBC - Delete 리팩토링 완료
  */
@@ -65,26 +65,5 @@ public class Plan {
         this.createdDateTime = LocalDateTime.now();
         this.updatedDateTime = LocalDateTime.now();
     }
-
-    /**
-     * 기능
-     *
-     * @param name        :
-     * @param plannedDate :
-     * @param title       :
-     * @param task        :
-     */
-    public void editPlanEntity(
-            String name,
-            LocalDate plannedDate,
-            String title,
-            String task
-    ) {
-        this.name = name;
-        this.plannedDate = plannedDate;
-        this.title = title;
-        this.task = task;
-
-        this.updatedDateTime = LocalDateTime.now();
-    }
+    // 기능
 }

@@ -21,7 +21,7 @@ import java.util.Optional;
  * Delete 완료
  * JDBC - Create 리팩토링 완료
  * JDBC - Read 리팩토링 중 (목록 조회)
- * JDBC - Read 리팩토링 완료 (단건 조회)
+ * JDBC - Read 리팩토링 완료 (예외처리 추가 수정, 단건 조회)
  * JDBC - Update 리팩토링 2차 완료 (수정 날짜 바뀌도록 수정, 일부가 null일 때 예외 처리 전)
  * JDBC - Delete 리팩토링 완료
  */
@@ -70,16 +70,9 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public PlanResponseDto processFetchEach(Long id) {
-        Optional<Plan> optionalPlan = planRepository.fetchPlanById(id);
-        // [수정 전] Plan planById = planRepository.fetchPlanById(id);
+        Plan plan = planRepository.fetchPlanById0rElseThrow(id);
 
-        if (optionalPlan.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id does not exist = " + id);
-        }
-        // [수정 전] (planById == null)
-
-        return new PlanResponseDto(optionalPlan.get());
-        // [수정 전] return new PlanResponseDto(planById);
+        return new PlanResponseDto(plan);
     }
 
     /**
