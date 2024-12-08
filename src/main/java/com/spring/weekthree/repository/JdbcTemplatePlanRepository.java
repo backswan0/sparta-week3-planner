@@ -82,7 +82,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
          */
 
         if (name != null) {
-            sql.append("AND BINARY name = ? ");
+            sql.append(" AND BINARY name = ? ");
             params.add(name);
         }
         /*
@@ -94,7 +94,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
 
         if (updatedDate != null) {
             Date updatedDateSql = Date.valueOf(updatedDate);
-            sql.append("AND DATE(updatedDateTime) = ? ");
+            sql.append(" AND DATE(updatedDateTime) = ? ");
             params.add(updatedDateSql);
         }
         /*
@@ -105,7 +105,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
          - [수정 전] sql.append("AND BINARY name = ? ");
          */
 
-        sql.append("ORDER BY updatedDateTime DESC");
+        sql.append(" ORDER BY updatedDateTime DESC");
         // SQL 쿼리의 끝에 내림차순 추가
 
         List<PlanResponseDto> allPlans = jdbcTemplate.query(
