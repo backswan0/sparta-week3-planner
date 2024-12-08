@@ -2,6 +2,7 @@ package com.spring.weekthree.repository;
 
 import com.spring.weekthree.dto.responsedto.PlanResponseDto;
 import com.spring.weekthree.entity.Plan;
+import org.springframework.data.relational.core.sql.SQL;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -15,6 +16,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,46 +68,62 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
             String name,
             LocalDate updatedDate
     ) {
-        Stream<PlanResponseDto> allPlans = Stream.empty();
+        StringBuilder sql = new StringBuilder("SELECT * FROM planner WHERE 1=1");
+        /*
+        [StringBuilder]
+        - 기본 SQL 쿼리인 "SELECT * FROM planner WHERE 1=1 "로 초기화
+        - WHERE 1=1은 조건이 항상 참이므로,
+        나중에 동적으로 조건을 추가할 때 AND와 함께 쉽게 연결할 수 있게 도와준다.
+         */
 
-        if ((name != null) && (updatedDate != null)) {
+        List<Object> params = new ArrayList<>();
+        /*
+        - SQL 파라미터를 담을 리스트를 생성
+         */
 
-            Date updatedDateSql = Date.valueOf(updatedDate);
-
-            allPlans = jdbcTemplate.queryForStream(
-                    "SELECT * FROM planner " +
-                            "WHERE BINARY name = ? " +
-                            "AND DATE(updatedDateTime) = ? " +
-                            "ORDER BY updatedDateTime DESC",
-                    plannerRowMapper(),
-                    name,
-                    updatedDateSql
-            );
-        } else if (name != null) {
-            allPlans = jdbcTemplate.queryForStream(
-                    "SELECT * FROM planner " +
-                            "WHERE BINARY name = ? " +
-                            "ORDER BY updatedDateTime DESC",
-                    plannerRowMapper(),
-                    name
-            );
-        } else if (updatedDate != null) {
-            Date updatedDateSql = Date.valueOf(updatedDate);
-            allPlans = jdbcTemplate.queryForStream(
-                    "SELECT * FROM planner " +
-                            "WHERE DATE(updatedDateTime) = ? " +
-                            "ORDER BY updatedDateTime DESC",
-                    plannerRowMapper(),
-                    updatedDateSql
-            );
-        } else {
-            allPlans = jdbcTemplate.queryForStream(
-                    "SELECT * FROM planner " +
-                            "ORDER BY updatedDateTime DESC",
-                    plannerRowMapper()
-            );
+        if (name != null) {
+            sql.append("AND BINARY name = ? ");
+            params.add(name);
         }
-        return allPlans.collect(Collectors.toList());
+        /*
+        [name이 null이 아니면]
+         - "AND BINARY name = ?" 조건을 SQL 쿼리에 추가
+         - 조건에 해당하는 name 값을 params 리스트에 추가
+         - [수정 전] sql.append("AND BINARY name = ? ");
+         */
+
+        if (updatedDate != null) {
+            Date updatedDateSql = Date.valueOf(updatedDate);
+            sql.append("AND DATE(updatedDateTime) = ? ");
+            params.add(updatedDateSql);
+        }
+        /*
+        [updatedDate가 null이 아니면]
+         - LocalDate 데이터 타입을 SQL Date(java.sql.Date)로 변환
+         - "AND DATE(updatedDateTime) = ?" 조건을 SQL 쿼리에 추가
+         - 조건에 해당하는 updatedDate 값을 params 리스트에 추가
+         - [수정 전] sql.append("AND BINARY name = ? ");
+         */
+
+        sql.append("ORDER BY updatedDateTime DESC");
+        // SQL 쿼리의 끝에 내림차순 추가
+
+        List<PlanResponseDto> allPlans = jdbcTemplate.query(
+                sql.toString(),
+                // StringBuilder 객체 sql에 저장된 문자열 반환
+
+                plannerRowMapper(),
+                // SQL 결과를 PlanResponseDto 객체로 변환
+
+                params.toArray()
+                /*
+                [1] params 리스트를 Object[] 배열로 변환
+                [2] jdbcTemplate.query 메서드에 전달
+                 */
+        );
+        // 완성된 SQL 쿼리와 파라미터로 쿼리 실행 결과를 List<PlanResponseDto>로 반환
+        // [수정 전] "ORDER BY updatedDateTime DESC"
+        return allPlans;
     }
 
     @Override
