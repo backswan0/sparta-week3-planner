@@ -9,7 +9,16 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * 도전 과제 C 완료
+ * 도전 과제 R 전체 조회 완료
+ * 도전 과제 R 단건 조회 완료
+ *
+ *
+ */
 
 @Service
 public class PlanServiceImpl implements PlanService {
@@ -18,7 +27,6 @@ public class PlanServiceImpl implements PlanService {
 
     // 생성자
     public PlanServiceImpl(PlanRepository planRepository) {
-
         this.planRepository = planRepository;
     }
 
@@ -34,7 +42,6 @@ public class PlanServiceImpl implements PlanService {
                 requestDto.getTitle(),
                 requestDto.getTask()
         );
-
         Plan savedPlan = planRepository.save(plan);
 
         return new PlanResponseDto(savedPlan);
@@ -47,10 +54,22 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public List<PlanResponseDto> processFetchList(
-            String name,
+            Long memberId,
             LocalDate updatedDate
     ) {
-        return planRepository.fetchAllPlans(name, updatedDate);
+        List<Plan> plans = planRepository.fetchAllPlans(memberId, updatedDate);
+        // 1. 레포지토리에서 리스트를 타입이 Plan인 리스트를 가져온다.
+
+        List<PlanResponseDto> allPlans = new ArrayList<>();
+        // 2. 타입이 PlanResponseDto인 리스트 allPlans를 선언한다.
+
+        for (Plan plan : plans) {
+            allPlans.add(new PlanResponseDto(plan));
+        }
+        // 3. plans에서 plan을 하나씩 꺼내 dto 객체로 생성하여 넣는다.
+
+        return allPlans;
+        // 4. 반환한다.
     }
 
     @Override

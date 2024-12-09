@@ -7,14 +7,20 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * [리팩토링 완료]
- * 수정이 바로 안 되는 점 해결
+ * 도전 과제 C 완료
+ * 도전 과제 R 전체 조회 완료
+ * 도전 과제 R 단건 조회 완료
+ *
+ *
  */
 
 public interface PlanService {
     PlanResponseDto processSave(CreatePlanRequestDto requestDto);
 
-    List<PlanResponseDto> processFetchList(String name, LocalDate updatedDate);
+    List<PlanResponseDto> processFetchList(
+            Long memberId,
+            LocalDate updatedDate
+    );
 
     PlanResponseDto processFetchEach(Long id);
 

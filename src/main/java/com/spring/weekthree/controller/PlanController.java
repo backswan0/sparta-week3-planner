@@ -11,6 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * 도전 과제 C 완료
+ * 도전 과제 R 전체 조회 완료
+ * 도전 과제 R 단건 조회 완료
+ *
+ *
+ */
+
 @RestController
 @RequestMapping("/plans")
 public class PlanController {
@@ -36,12 +44,12 @@ public class PlanController {
 
     @GetMapping
     public ResponseEntity<List<PlanResponseDto>> readAllPlans(
-            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Long memberId,
             @RequestParam(required = false) LocalDate updatedDate
     ) {
         List<PlanResponseDto> allPlans;
 
-        allPlans = planService.processFetchList(name, updatedDate);
+        allPlans = planService.processFetchList(memberId, updatedDate);
 
         return new ResponseEntity<>(allPlans, HttpStatus.OK);
     }

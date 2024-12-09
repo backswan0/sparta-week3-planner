@@ -1,6 +1,5 @@
 package com.spring.weekthree.repository;
 
-import com.spring.weekthree.dto.responsedto.PlanResponseDto;
 import com.spring.weekthree.entity.Plan;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.*;
@@ -16,12 +15,19 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/**
+ * 도전 과제 C 완료
+ * 도전 과제 R 전체 조회 완료
+ * 도전 과제 R 단건 조회 완료
+ *
+ *
+ */
+
 @Repository
 public class JdbcTemplatePlanRepository implements PlanRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public JdbcTemplatePlanRepository(DataSource dataSource) {
-
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
@@ -62,35 +68,37 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     }
 
     @Override
-    public List<PlanResponseDto> fetchAllPlans(
-            String name,
+    public List<Plan> fetchAllPlans(
+            Long memberId,
             LocalDate updatedDate
     ) {
         StringBuilder sql;
 
-        sql = new StringBuilder("SELECT * FROM planner WHERE 1=1");
+        sql = new StringBuilder("SELECT * FROM planner_challenge_plans WHERE 1=1");
 
         List<Object> params = new ArrayList<>();
 
-        if (name != null) {
-            sql.append(" AND BINARY name = ? ");
-            params.add(name);
+        if (memberId != null) {
+            sql.append(" AND member_id = ? ");
+            params.add(memberId);
         }
 
         if (updatedDate != null) {
             Date updatedDateSql = Date.valueOf(updatedDate);
-            sql.append(" AND DATE(updatedDateTime) = ? ");
+            sql.append(" AND DATE(updated_date_time) = ? ");
             params.add(updatedDateSql);
         }
 
-        sql.append(" ORDER BY updatedDateTime DESC");
-        List<PlanResponseDto> allPlans;
+        sql.append(" ORDER BY updated_date_time DESC");
+
+        List<Plan> allPlans;
 
         allPlans = jdbcTemplate.query(
                 sql.toString(),
                 plannerRowMapper(),
                 params.toArray()
         );
+
         return allPlans;
     }
 
@@ -147,20 +155,21 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         );
     }
 
-    private RowMapper<PlanResponseDto> plannerRowMapper() {
-        return new RowMapper<PlanResponseDto>() {
+    private RowMapper<Plan> plannerRowMapper() {
+        return new RowMapper<Plan>() {
             @Override
-            public PlanResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-                // TODO
-                return null;
-//                return new PlanResponseDto(
-//                        rs.getLong("id"),
-//                        rs.getDate("plannedDate").toLocalDate(),
-//                        rs.getString("title"),
-//                        rs.getString("task"),
-//                        rs.getTimestamp("createdDateTime").toLocalDateTime(),
-//                        rs.getTimestamp("updatedDateTime").toLocalDateTime()
-//                );
+            public Plan mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new Plan(
+                        // [주의] rs.getLong("plan_id") 아니다. 컬럼 이름 주의!
+                        rs.getLong("id"),
+                        rs.getLong("member_id"),
+                        rs.getString("password"),
+                        rs.getDate("planned_date").toLocalDate(),
+                        rs.getString("title"),
+                        rs.getString("task"),
+                        rs.getTimestamp("created_date_time").toLocalDateTime(),
+                        rs.getTimestamp("updated_date_time").toLocalDateTime()
+                );
             }
         };
     }
