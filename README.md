@@ -82,28 +82,28 @@ erDiagram
 
 #### Response Body Details
 1. **`GET` Read All Plans**
-```json
-[
-    {
-        "id": 1,
-        "name": "사용자명",
-        "plannedDate": "일정 날짜",
-        "title": "일정 제목",
-        "task": "일정 내용",
-        "createdDateTime": "2024-12-10T13:49:42",
-        "updatedDateTime": "2024-12-10T13:49:42"
-    },
-    {
-        "id": 2,
-        "name": "사용자명2",
-        "plannedDate": "일정 날짜2",
-        "title": "일정 제목2",
-        "task": "일정 내용2",
-        "createdDateTime": "2024-12-10T14:00:00",
-        "updatedDateTime": "2024-12-10T14:00:00"
-    }
-]
-```
+    ```json
+    [
+        {
+            "id": 1,
+            "name": "사용자명",
+            "plannedDate": "일정 날짜",
+            "title": "일정 제목",
+            "task": "일정 내용",
+            "createdDateTime": "2024-12-10T13:49:42",
+            "updatedDateTime": "2024-12-10T13:49:42"
+        },
+        {
+            "id": 2,
+            "name": "사용자명2",
+            "plannedDate": "일정 날짜2",
+            "title": "일정 제목2",
+            "task": "일정 내용2",
+            "createdDateTime": "2024-12-10T14:00:00",
+            "updatedDateTime": "2024-12-10T14:00:00"
+        }
+    ]
+    ```
 
 3. **`GET` Read Specific Plan**
     ```json
