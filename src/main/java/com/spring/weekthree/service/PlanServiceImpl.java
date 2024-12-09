@@ -3,7 +3,8 @@ package com.spring.weekthree.service;
 import com.spring.weekthree.dto.requestdto.CreatePlanRequestDto;
 import com.spring.weekthree.dto.responsedto.PlanResponseDto;
 import com.spring.weekthree.entity.Plan;
-import com.spring.weekthree.repository.PlanRepository;
+import com.spring.weekthree.repository.member.MemberRepository;
+import com.spring.weekthree.repository.plan.PlanRepository;
 import com.spring.weekthree.util.TimeUtil;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * 도전 과제 C 완료
  * 도전 과제 R 전체 조회 완료
  * 도전 과제 R 단건 조회 리팩토링 완료
- *
+ * 도전 과제 U 초안 완료
  * 도전 과제 D 완료
  */
 
@@ -24,11 +25,16 @@ import java.util.List;
 public class PlanServiceImpl implements PlanService {
     // 속성
     private final PlanRepository planRepository;
+    private final MemberRepository memberRepository;
 
     // 생성자
-    public PlanServiceImpl(PlanRepository planRepository) {
+    public PlanServiceImpl(
+            PlanRepository planRepository,
+            MemberRepository memberRepository
+    ) {
 
         this.planRepository = planRepository;
+        this.memberRepository = memberRepository;
     }
 
     // 기능
@@ -81,15 +87,6 @@ public class PlanServiceImpl implements PlanService {
         return new PlanResponseDto(plan);
     }
 
-    /**
-     * @param planId          :
-     * @param name        :
-     * @param password    :
-     * @param plannedDate :
-     * @param title       :
-     * @param task        :
-     * @return new PlanResponseDto(planById)
-     */
     @Override
     public PlanResponseDto processUpdatePatch(
             Long planId,
@@ -107,9 +104,15 @@ public class PlanServiceImpl implements PlanService {
 
         LocalDateTime updatedDateTime = TimeUtil.now();
 
+        plan.update(
+                plannedDate,
+                title,
+                task,
+                updatedDateTime
+        );
+
         int updatedRow = planRepository.updatePatchInRepository(
                 planId,
-                name,
                 plannedDate,
                 title,
                 task,
@@ -117,12 +120,7 @@ public class PlanServiceImpl implements PlanService {
         );
 
         if (updatedRow >= 1) {
-            plan.update(
-                    plannedDate,
-                    title,
-                    task,
-                    updatedDateTime
-            );
+            memberRepository.updateMemberName(plan.getMemberId(), name);
         }
         return new PlanResponseDto(plan);
     }

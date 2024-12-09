@@ -1,4 +1,4 @@
-package com.spring.weekthree.repository;
+package com.spring.weekthree.repository.plan;
 
 import com.spring.weekthree.entity.Plan;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import java.util.*;
  * 도전 과제 C 완료
  * 도전 과제 R 전체 조회 완료
  * 도전 과제 R 단건 조회 리팩토링 완료
- *
+ * 도전 과제 U 초안 완료
  * 도전 과제 D 완료
  */
 
@@ -122,23 +122,19 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
 
     @Override
     public int updatePatchInRepository(
-
             Long id,
-            String name,
             LocalDate plannedDate,
             String title,
             String task,
             LocalDateTime updatedDateTime
     ) {
         return jdbcTemplate.update(
-                "UPDATE planner SET " +
-                        "name = ?, " +
-                        "plannedDate = ?, " +
+                "UPDATE planner_challenge_plans SET " +
+                        "planned_date = ?, " +
                         "title = ?, " +
                         "task = ?, " +
-                        "updatedDateTime = ? " +
+                        "updated_date_time = ? " +
                         "WHERE id = ?",
-                name,
                 plannedDate,
                 title,
                 task,
