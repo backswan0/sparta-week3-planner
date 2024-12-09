@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 도전 과제 C 완료
  * 도전 과제 R 전체 조회 완료
- * 도전 과제 R 단건 조회 완료
+ * 도전 과제 R 단건 조회 리팩토링 완료
  *
  *
  */
@@ -54,13 +54,13 @@ public class PlanController {
         return new ResponseEntity<>(allPlans, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PlanResponseDto> readPlanById(
-            @PathVariable Long id
+    @GetMapping("/{planId}")
+    public ResponseEntity<PlanResponseDto> readPlanByMemberId(
+            @PathVariable Long planId
     ) {
         PlanResponseDto responseDto;
 
-        responseDto = planService.processFetchEach(id);
+        responseDto = planService.processFetchEach(planId);
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }

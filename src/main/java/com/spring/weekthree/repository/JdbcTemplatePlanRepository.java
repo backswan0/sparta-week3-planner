@@ -18,7 +18,7 @@ import java.util.*;
 /**
  * 도전 과제 C 완료
  * 도전 과제 R 전체 조회 완료
- * 도전 과제 R 단건 조회 완료
+ * 도전 과제 R 단건 조회 리팩토링 완료
  *
  *
  */
@@ -103,21 +103,21 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     }
 
     @Override
-    public Plan fetchPlanById0rElseThrow(Long id) {
+    public Plan fetchPlanById0rElseThrow(Long planId) {
 
         List<Plan> result = jdbcTemplate.query(
-                "SELECT * FROM planner WHERE id =?",
-                plannerRowMapperEach(),
-                id
+                "SELECT * FROM planner_challenge_plans WHERE id = "
+                        + planId,
+                plannerRowMapperEach()
         );
-        return result.stream()
-                .findAny()
-                .orElseThrow(
-                        () -> new ResponseStatusException(
-                                HttpStatus.NOT_FOUND,
-                                "Id does no exist id = " + id
-                        )
-                );
+
+        if (result.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Id does no exist id = " + planId
+            );
+        }
+        return result.get(0);
     }
 
     @Override
@@ -178,17 +178,16 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         return new RowMapper<Plan>() {
             @Override
             public Plan mapRow(ResultSet rs, int rowNum) throws SQLException {
-                // TODO
-                return null;
-//                return new Plan(
-//                        rs.getLong("id"),
-//                        rs.getString("password"),
-//                        rs.getDate("plannedDate").toLocalDate(),
-//                        rs.getString("title"),
-//                        rs.getString("task"),
-//                        rs.getTimestamp("createdDateTime").toLocalDateTime(),
-//                        rs.getTimestamp("updatedDateTime").toLocalDateTime()
-//                );
+                return new Plan(
+                        rs.getLong("id"),
+                        rs.getLong("member_id"),
+                        rs.getString("password"),
+                        rs.getDate("planned_date").toLocalDate(),
+                        rs.getString("title"),
+                        rs.getString("task"),
+                        rs.getTimestamp("created_date_time").toLocalDateTime(),
+                        rs.getTimestamp("updated_date_time").toLocalDateTime()
+                );
             }
         };
     }

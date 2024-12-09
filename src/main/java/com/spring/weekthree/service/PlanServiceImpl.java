@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * 도전 과제 C 완료
  * 도전 과제 R 전체 조회 완료
- * 도전 과제 R 단건 조회 완료
+ * 도전 과제 R 단건 조회 리팩토링 완료
  *
  *
  */
@@ -73,10 +73,9 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public PlanResponseDto processFetchEach(Long id) {
-        Plan plan;
+    public PlanResponseDto processFetchEach(Long memberId) {
 
-        plan = planRepository.fetchPlanById0rElseThrow(id);
+        Plan plan = planRepository.fetchPlanById0rElseThrow(memberId);
 
         return new PlanResponseDto(plan);
     }
