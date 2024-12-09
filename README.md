@@ -19,16 +19,16 @@
 
 ```mermaid
 erDiagram
-PLANS (table_name: planner) {
-id bigint PK
-name varchar
-password varchar
-plannedDate date
-title varchar
-task varchar
-createdDateTime datetime
-updatedDateTime datetime
-}
+    PLANS {
+        id bigint PK
+        name varchar
+        password varchar
+        plannedDate date
+        title varchar
+        task varchar
+        createdDateTime datetime
+        updatedDateTime datetime
+    }
 ```
 
 ## 📜 API Specification 
