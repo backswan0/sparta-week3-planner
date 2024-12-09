@@ -9,7 +9,7 @@
 - **Study**: 29/11/2024 – 03/12/2024
 - **Development**: 03/12/2024 – 10/12/2024
 
-## 💻 Tech Stack
+## 🛠️ Tech Stack
 - Java 17
 - Spring Boot 3.4.0
 - MySQL 9.1.0
@@ -31,8 +31,8 @@ erDiagram
     }
 ```
 
-### Note
-- The SQL database table name of PLANS is planner.
+### ERD Note
+- The SQL database table name of `PLANS` is `planner`.
 
 ## 📜 API Specification 
 ### Basic Information 
@@ -41,29 +41,44 @@ erDiagram
 - Character Encoding: UTF-8
 
 ### API List
-| Method | URI                    | Description             | Request Parameters          | Response Code |
-|--------|------------------------|-------------------------|-----------------------------|---------------|
-| POST   | /plans                 | Create plan             |                             | 201           |
-| GET    | /plans                 | Get all plans           |                             | 200           |
-| GET    | /plans/{id}            | Search specific plan    | memberId, updatedDate       | 200           |
-| PATCH  | /plans/{id}            | Update plan partially   | id, title, task, password   | 200           |
-| DELETE | /plans/{id}            | Delete plan             | id, password                | 200           |
+| Method | URI                    | Description             | Request Parameters                             | Response Code |
+|--------|------------------------|-------------------------|------------------------------------------------|---------------|
+| POST   | /plans                 | Create plan             |                                                | 201           |
+| GET    | /plans                 | Read all plans          | name, updatedDate                              | 200           |
+| GET    | /plans/{id}            | Read specific plan      | id                                             | 200           |
+| PATCH  | /plans/{id}            | Update plan partially   | id, name, password, plannedDate, title, task   | 200           |
+| DELETE | /plans/{id}            | Delete plan             | id, password                                   | 200           |
 
 ### API Details
 #### Request Body Details
 1. **`POST` Create Plan**
     ```json
     {
+        "name" : "사용자명",
+        "password" : "비밀번호",
+        "plannedDate" : "일정 날짜",
         "title": "일정 제목",
-        "task": "할 일 내용",
-        "name": "사용자명",
-        "password": "비밀번호"
+        "task": "일정 내용"
     }
     ```
 
-2. **`GET` Get Plan**
-3. **`PATCH` Update Plan**
-4. **`DELETE` Delete Plan** 
+2. **`PATCH` Update Plan**
+    ```json
+    {
+        "name" : "사용자명",
+        "password" : "비밀번호",
+        "plannedDate" : "일정 날짜",
+        "title": "일정 제목",
+        "task": "일정 내용"
+    }
+    ```
+ 
+3. **`DELETE` Delete Plan**
+    ```json
+    {
+        "password" : "비밀번호"
+    }
+    ```
 
 #### Response Body Details
 
