@@ -17,6 +17,7 @@
 
 ## 🔗 ERD
 
+```mermaid
 erDiagram
     MEMBERS ||--o{ PLANS : creates
     MEMBERS {
@@ -35,6 +36,7 @@ erDiagram
         updated_date_time datetime
         member_id bigint FK
     }
+
 
 ## 📜 API Specification 
 ### Basic Information 
