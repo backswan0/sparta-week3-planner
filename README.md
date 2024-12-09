@@ -35,19 +35,21 @@
 ### API Details
 #### Request Body Details
 1. **`POST` Create Plan**
-   ```json
-{
-    "title": "일정 제목",
-    "task": "할 일 내용",
-    "name": "사용자명",
-    "password": "비밀번호"
-}
+    ```json
+    {
+        "title": "일정 제목",
+        "task": "할 일 내용",
+        "name": "사용자명",
+        "password": "비밀번호"
+    }
+    ```
 
 2. **`GET` Get Plan**
 3. **`PATCH` Update Plan**
 4. **`DELETE` Delete Plan** 
 
 #### Response Body Details
+
 
 ## 🚀 Level
 
