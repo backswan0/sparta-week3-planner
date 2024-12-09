@@ -15,10 +15,16 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+/**
+ * [리팩토링 완료]
+ * 수정이 바로 안 되는 점 해결
+ */
 
 @Repository
 public class JdbcTemplatePlanRepository implements PlanRepository {
@@ -31,7 +37,9 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
 
     @Override
     public PlanResponseDto save(Plan plan) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        SimpleJdbcInsert jdbcInsert;
+
+        jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 
         jdbcInsert.withTableName("planner").
                 usingGeneratedKeyColumns("id");
@@ -47,7 +55,8 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         parameters.put("updatedDateTime", plan.getUpdatedDateTime());
 
         Number key = jdbcInsert.executeAndReturnKey(
-                new MapSqlParameterSource(parameters)
+                new MapSqlParameterSource(parameters
+                )
         );
 
         return new PlanResponseDto(
@@ -65,7 +74,15 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
             String name,
             LocalDate updatedDate
     ) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM planner WHERE 1=1");
+        StringBuilder sql;
+
+        sql = new StringBuilder("SELECT * FROM planner WHERE 1=1");
+        /*
+        [StringBuilder]
+        - 기본 SQL 쿼리인 "SELECT * FROM planner WHERE 1=1 "로 초기화
+        - WHERE 1=1은 조건이 항상 참이므로,
+        - 나중에 동적으로 조건을 추가할 때 AND와 함께 쉽게 연결할 수 있게 도와준다.
+         */
 
         List<Object> params = new ArrayList<>();
 
@@ -73,12 +90,25 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
             sql.append(" AND BINARY name = ? ");
             params.add(name);
         }
+        /*
+        [name이 null이 아니면]
+        - "AND BINARY name = ?" 조건을 SQL 쿼리에 추가
+        - 조건에 해당하는 name 값을 params 리스트에 추가
+        - [수정 전] sql.append("AND BINARY name = ? ");
+         */
 
         if (updatedDate != null) {
             Date updatedDateSql = Date.valueOf(updatedDate);
             sql.append(" AND DATE(updatedDateTime) = ? ");
             params.add(updatedDateSql);
         }
+        /*
+        [updatedDate가 null이 아니면]
+         - LocalDate 데이터 타입을 SQL Date(java.sql.Date)로 변환
+         - "AND DATE(updatedDateTime) = ?" 조건을 SQL 쿼리에 추가
+         - 조건에 해당하는 updatedDate 값을 params 리스트에 추가
+         - [수정 전] sql.append("AND BINARY name = ? ");
+         */
 
         sql.append(" ORDER BY updatedDateTime DESC");
 
@@ -88,7 +118,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
                 sql.toString(),
                 plannerRowMapper(),
                 params.toArray()
-        ); // 순서를 바꾸어도 문제가 없는가?
+        );
         return allPlans;
     }
 
@@ -102,32 +132,36 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         );
         return result.stream()
                 .findAny()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Id does no exist id = " + id)
+                .orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "Id does no exist id = " + id
+                        )
                 );
     }
 
     @Override
-    public void updatePatchInRepository(
+    public int updatePatchInRepository(
             Long id,
             String name,
             LocalDate plannedDate,
             String title,
-            String task
+            String task,
+            LocalDateTime updatedDateTime
     ) {
-        jdbcTemplate.update(
+        return jdbcTemplate.update(
                 "UPDATE planner SET " +
                         "name = ?, " +
                         "plannedDate = ?, " +
                         "title = ?, " +
                         "task = ?, " +
-                        "updatedDateTime = CURRENT_TIMESTAMP " +
+                        "updatedDateTime = ? " +
                         "WHERE id = ?",
                 name,
                 plannedDate,
                 title,
                 task,
+                updatedDateTime,
                 id
         );
     }

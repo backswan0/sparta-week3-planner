@@ -4,13 +4,17 @@ import com.spring.weekthree.dto.requestdto.CreatePlanRequestDto;
 import com.spring.weekthree.dto.responsedto.PlanResponseDto;
 import com.spring.weekthree.entity.Plan;
 import com.spring.weekthree.repository.PlanRepository;
-import org.springframework.http.HttpStatus;
+import com.spring.weekthree.util.TimeUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
+
+/**
+ * [리팩토링 완료]
+ * 수정이 바로 안 되는 점 해결
+ */
 
 @Service
 public class PlanServiceImpl implements PlanService {
@@ -82,19 +86,33 @@ public class PlanServiceImpl implements PlanService {
 
         plan = planRepository.fetchPlanById0rElseThrow(id);
 
-        if (!Objects.equals(password, plan.getPassword()))
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Password does not match"
-            );
+        plan.validatePassword(password);
 
-        planRepository.updatePatchInRepository(
+        LocalDateTime updatedDateTime = TimeUtil.now();
+
+        int updatedRow = planRepository.updatePatchInRepository(
                 id,
                 name,
                 plannedDate,
                 title,
-                task
+                task,
+                updatedDateTime
         );
+
+        System.out.println(updatedRow);
+
+        // plan = planRepository.fetchPlanById0rElseThrow(id);
+        // 나중에 db랑 소통하는 횟수가 api 성능에 영향을 주기 때문에...!
+
+        if (updatedRow >= 1) {
+            plan.update(
+                    name,
+                    plannedDate,
+                    title,
+                    task,
+                    updatedDateTime
+            );
+        }
         return new PlanResponseDto(plan);
     }
 
@@ -105,11 +123,8 @@ public class PlanServiceImpl implements PlanService {
 
         plan = planRepository.fetchPlanById0rElseThrow(id);
 
-        if (!Objects.equals(password, plan.getPassword()))
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Password does not match"
-            );
+        plan.validatePassword(password);
+
         planRepository.deletePlan(id);
     }
 }

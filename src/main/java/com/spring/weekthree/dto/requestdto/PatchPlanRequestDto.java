@@ -5,6 +5,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+/**
+ * [리팩토링 완료]
+ * 수정이 바로 안 되는 점 해결
+ */
+
 @NoArgsConstructor
 @Getter
 public class PatchPlanRequestDto {

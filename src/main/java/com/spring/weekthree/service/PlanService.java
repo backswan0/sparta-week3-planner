@@ -6,6 +6,11 @@ import com.spring.weekthree.dto.responsedto.PlanResponseDto;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * [리팩토링 완료]
+ * 수정이 바로 안 되는 점 해결
+ */
+
 public interface PlanService {
     PlanResponseDto processSave(CreatePlanRequestDto requestDto);
 
