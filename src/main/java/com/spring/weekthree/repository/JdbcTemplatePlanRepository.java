@@ -3,28 +3,18 @@ package com.spring.weekthree.repository;
 import com.spring.weekthree.dto.responsedto.PlanResponseDto;
 import com.spring.weekthree.entity.Plan;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.*;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.sql.DataSource;
+import java.sql.*;
 import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-/**
- * [리팩토링 완료]
- * 수정이 바로 안 되는 점 해결
- */
+import java.util.*;
 
 @Repository
 public class JdbcTemplatePlanRepository implements PlanRepository {
@@ -36,37 +26,39 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     }
 
     @Override
-    public PlanResponseDto save(Plan plan) {
+    public Plan save(Plan plan) {
         SimpleJdbcInsert jdbcInsert;
 
         jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 
-        jdbcInsert.withTableName("planner").
+        jdbcInsert.withTableName("planner_challenge_plans").
                 usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = new HashMap<>();
 
-        parameters.put("name", plan.getName());
+        parameters.put("member_id", plan.getMemberId());
         parameters.put("password", plan.getPassword());
-        parameters.put("plannedDate", plan.getPlannedDate());
+        parameters.put("planned_date", plan.getPlannedDate());
         parameters.put("title", plan.getTitle());
         parameters.put("task", plan.getTask());
-        parameters.put("createdDateTime", plan.getCreatedDateTime());
-        parameters.put("updatedDateTime", plan.getUpdatedDateTime());
+        parameters.put("created_date_time", plan.getCreatedDateTime());
+        parameters.put("updated_date_time", plan.getUpdatedDateTime());
 
         Number key = jdbcInsert.executeAndReturnKey(
                 new MapSqlParameterSource(parameters
                 )
         );
 
-        return new PlanResponseDto(
+        return new Plan(
                 key.longValue(),
-                plan.getName(),
+                plan.getMemberId(),
+                plan.getPassword(),
                 plan.getPlannedDate(),
                 plan.getTitle(),
                 plan.getTask(),
                 plan.getCreatedDateTime(),
-                plan.getUpdatedDateTime());
+                plan.getUpdatedDateTime()
+        );
     }
 
     @Override
@@ -77,12 +69,6 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         StringBuilder sql;
 
         sql = new StringBuilder("SELECT * FROM planner WHERE 1=1");
-        /*
-        [StringBuilder]
-        - 기본 SQL 쿼리인 "SELECT * FROM planner WHERE 1=1 "로 초기화
-        - WHERE 1=1은 조건이 항상 참이므로,
-        - 나중에 동적으로 조건을 추가할 때 AND와 함께 쉽게 연결할 수 있게 도와준다.
-         */
 
         List<Object> params = new ArrayList<>();
 
@@ -90,28 +76,14 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
             sql.append(" AND BINARY name = ? ");
             params.add(name);
         }
-        /*
-        [name이 null이 아니면]
-        - "AND BINARY name = ?" 조건을 SQL 쿼리에 추가
-        - 조건에 해당하는 name 값을 params 리스트에 추가
-        - [수정 전] sql.append("AND BINARY name = ? ");
-         */
 
         if (updatedDate != null) {
             Date updatedDateSql = Date.valueOf(updatedDate);
             sql.append(" AND DATE(updatedDateTime) = ? ");
             params.add(updatedDateSql);
         }
-        /*
-        [updatedDate가 null이 아니면]
-         - LocalDate 데이터 타입을 SQL Date(java.sql.Date)로 변환
-         - "AND DATE(updatedDateTime) = ?" 조건을 SQL 쿼리에 추가
-         - 조건에 해당하는 updatedDate 값을 params 리스트에 추가
-         - [수정 전] sql.append("AND BINARY name = ? ");
-         */
 
         sql.append(" ORDER BY updatedDateTime DESC");
-
         List<PlanResponseDto> allPlans;
 
         allPlans = jdbcTemplate.query(
@@ -142,6 +114,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
 
     @Override
     public int updatePatchInRepository(
+
             Long id,
             String name,
             LocalDate plannedDate,
@@ -178,15 +151,16 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         return new RowMapper<PlanResponseDto>() {
             @Override
             public PlanResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new PlanResponseDto(
-                        rs.getLong("id"),
-                        rs.getString("name"),
-                        rs.getDate("plannedDate").toLocalDate(),
-                        rs.getString("title"),
-                        rs.getString("task"),
-                        rs.getTimestamp("createdDateTime").toLocalDateTime(),
-                        rs.getTimestamp("updatedDateTime").toLocalDateTime()
-                );
+                // TODO
+                return null;
+//                return new PlanResponseDto(
+//                        rs.getLong("id"),
+//                        rs.getDate("plannedDate").toLocalDate(),
+//                        rs.getString("title"),
+//                        rs.getString("task"),
+//                        rs.getTimestamp("createdDateTime").toLocalDateTime(),
+//                        rs.getTimestamp("updatedDateTime").toLocalDateTime()
+//                );
             }
         };
     }
@@ -195,16 +169,17 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         return new RowMapper<Plan>() {
             @Override
             public Plan mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new Plan(
-                        rs.getLong("id"),
-                        rs.getString("name"),
-                        rs.getString("password"),
-                        rs.getDate("plannedDate").toLocalDate(),
-                        rs.getString("title"),
-                        rs.getString("task"),
-                        rs.getTimestamp("createdDateTime").toLocalDateTime(),
-                        rs.getTimestamp("updatedDateTime").toLocalDateTime()
-                );
+                // TODO
+                return null;
+//                return new Plan(
+//                        rs.getLong("id"),
+//                        rs.getString("password"),
+//                        rs.getDate("plannedDate").toLocalDate(),
+//                        rs.getString("title"),
+//                        rs.getString("task"),
+//                        rs.getTimestamp("createdDateTime").toLocalDateTime(),
+//                        rs.getTimestamp("updatedDateTime").toLocalDateTime()
+//                );
             }
         };
     }

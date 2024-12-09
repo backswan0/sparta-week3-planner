@@ -11,11 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * [리팩토링 완료]
- * 수정이 바로 안 되는 점 해결
- */
-
 @Service
 public class PlanServiceImpl implements PlanService {
     // 속성
@@ -33,13 +28,16 @@ public class PlanServiceImpl implements PlanService {
             CreatePlanRequestDto requestDto
     ) {
         Plan plan = new Plan(
-                requestDto.getName(),
+                requestDto.getMemberId(),
                 requestDto.getPassword(),
                 requestDto.getPlannedDate(),
                 requestDto.getTitle(),
                 requestDto.getTask()
         );
-        return planRepository.save(plan);
+
+        Plan savedPlan = planRepository.save(plan);
+
+        return new PlanResponseDto(savedPlan);
         /*
         TODO
          repository를 in-memory에서 데이터베이스로 갈아끼울 때
@@ -99,14 +97,8 @@ public class PlanServiceImpl implements PlanService {
                 updatedDateTime
         );
 
-        System.out.println(updatedRow);
-
-        // plan = planRepository.fetchPlanById0rElseThrow(id);
-        // 나중에 db랑 소통하는 횟수가 api 성능에 영향을 주기 때문에...!
-
         if (updatedRow >= 1) {
             plan.update(
-                    name,
                     plannedDate,
                     title,
                     task,

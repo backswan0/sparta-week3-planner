@@ -7,13 +7,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * [리팩토링 완료]
- * 수정이 바로 안 되는 점 해결
- */
-
 public interface PlanRepository {
-    PlanResponseDto save(Plan plan);
+    Plan save(Plan plan);
 
     List<PlanResponseDto> fetchAllPlans(
             String name,
@@ -28,7 +23,7 @@ public interface PlanRepository {
             LocalDate plannedDate,
             String title,
             String task,
-            LocalDateTime updatedDateTime
+            LocalDateTime updatedDatetime
     );
 
     void deletePlan(Long id);

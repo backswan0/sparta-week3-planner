@@ -1,5 +1,6 @@
 package com.spring.weekthree.entity;
 
+import com.spring.weekthree.util.TimeUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -9,17 +10,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-/**
- * [리팩토링 완료]
- * 수정이 바로 안 되는 점 해결
- */
-
 @AllArgsConstructor
 @Getter
 public class Plan {
     // 속성
-    private Long id;
-    private String name;
+    private Long planId;
+    private Long memberId;
     private String password;
     private LocalDate plannedDate;
     private String title;
@@ -30,46 +26,39 @@ public class Plan {
     /**
      * 생성자
      *
-     * @param name        : 사용자 이름
      * @param password    : 사용자 비밀번호
      * @param plannedDate : 사용자가 입력한 일정 날짜
      * @param title       : 사용자가 입력한 일정의 제목
      * @param task        : 사용자가 입력한 일정의 상세 정보
      */
     public Plan(
-            String name,
+            Long memberId,
             String password,
             LocalDate plannedDate,
             String title,
             String task
     ) {
-        this.name = name;
+        this.memberId = memberId;
         this.password = password;
         this.plannedDate = plannedDate;
         this.title = title;
         this.task = task;
 
-        this.createdDateTime = LocalDateTime.now();
-        this.updatedDateTime = LocalDateTime.now();
+        this.createdDateTime = TimeUtil.now();
+        this.updatedDateTime = TimeUtil.now();
     }
-    // 기능
+
     public void update (
-            String name,
             LocalDate plannedDate,
             String title,
             String task,
             LocalDateTime updatedDateTime
     ) {
-        this.name = name;
         this.plannedDate = plannedDate;
         this.title = title;
         this.task = task;
 
         this.updatedDateTime = updatedDateTime;
-
-//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-         // this.updatedDateTime = LocalDateTime.parse(updatedDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-//        this.updatedDateTime = LocalDateTime.parse(updatedDateTime.format(dateTimeFormatter));
     }
 
     public void validatePassword(String password) {
