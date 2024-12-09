@@ -17,6 +17,25 @@
 
 ## 🔗 ERD
 
+erDiagram
+    MEMBERS ||--o{ PLANS : creates
+    MEMBERS {
+        id bigint PK
+        username varchar
+        password varchar
+        email varchar
+        register_date date
+        update_date_time datetime
+    }
+    PLANS {
+        id bigint PK
+        title varchar
+        task varchar
+        created_date_time datetime
+        updated_date_time datetime
+        member_id bigint FK
+    }
+
 ## 📜 API Specification 
 ### Basic Information 
 - Base URL: /plans
