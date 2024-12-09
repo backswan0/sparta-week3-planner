@@ -31,6 +31,9 @@ erDiagram
     }
 ```
 
+### Note
+- The SQL database table name of PLANS is planner.
+
 ## 📜 API Specification 
 ### Basic Information 
 - Base URL: /plans
