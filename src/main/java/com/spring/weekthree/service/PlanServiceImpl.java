@@ -17,7 +17,7 @@ import java.util.List;
  * 도전 과제 R 전체 조회 완료
  * 도전 과제 R 단건 조회 리팩토링 완료
  *
- *
+ * 도전 과제 D 완료
  */
 
 @Service
@@ -27,6 +27,7 @@ public class PlanServiceImpl implements PlanService {
 
     // 생성자
     public PlanServiceImpl(PlanRepository planRepository) {
+
         this.planRepository = planRepository;
     }
 
@@ -81,7 +82,7 @@ public class PlanServiceImpl implements PlanService {
     }
 
     /**
-     * @param id          :
+     * @param planId          :
      * @param name        :
      * @param password    :
      * @param plannedDate :
@@ -91,7 +92,7 @@ public class PlanServiceImpl implements PlanService {
      */
     @Override
     public PlanResponseDto processUpdatePatch(
-            Long id,
+            Long planId,
             String name,
             String password,
             LocalDate plannedDate,
@@ -100,14 +101,14 @@ public class PlanServiceImpl implements PlanService {
     ) {
         Plan plan;
 
-        plan = planRepository.fetchPlanById0rElseThrow(id);
+        plan = planRepository.fetchPlanById0rElseThrow(planId);
 
         plan.validatePassword(password);
 
         LocalDateTime updatedDateTime = TimeUtil.now();
 
         int updatedRow = planRepository.updatePatchInRepository(
-                id,
+                planId,
                 name,
                 plannedDate,
                 title,
@@ -127,14 +128,14 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public void processDelete(Long id, String password) {
+    public void processDelete(Long planId, String password) {
 
         Plan plan;
 
-        plan = planRepository.fetchPlanById0rElseThrow(id);
+        plan = planRepository.fetchPlanById0rElseThrow(planId);
 
         plan.validatePassword(password);
 
-        planRepository.deletePlan(id);
+        planRepository.deletePlan(planId);
     }
 }

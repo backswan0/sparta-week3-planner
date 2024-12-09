@@ -16,7 +16,7 @@ import java.util.List;
  * 도전 과제 R 전체 조회 완료
  * 도전 과제 R 단건 조회 리팩토링 완료
  *
- *
+ * 도전 과제 D 완료
  */
 
 @RestController
@@ -83,12 +83,12 @@ public class PlanController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{planId}")
     public ResponseEntity<Void> deletePlan(
-            @PathVariable Long id,
+            @PathVariable Long planId,
             @RequestParam String password
     ) {
-        planService.processDelete(id, password);
+        planService.processDelete(planId, password);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

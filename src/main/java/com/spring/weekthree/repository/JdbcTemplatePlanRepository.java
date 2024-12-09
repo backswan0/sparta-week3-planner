@@ -20,7 +20,7 @@ import java.util.*;
  * 도전 과제 R 전체 조회 완료
  * 도전 과제 R 단건 조회 리팩토링 완료
  *
- *
+ * 도전 과제 D 완료
  */
 
 @Repository
@@ -148,10 +148,10 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     }
 
     @Override
-    public void deletePlan(Long id) {
+    public void deletePlan(Long planId) {
         jdbcTemplate.update(
-                "DELETE FROM planner WHERE id = ?",
-                id
+                "DELETE FROM planner_challenge_plans WHERE id = ?",
+                planId
         );
     }
 
