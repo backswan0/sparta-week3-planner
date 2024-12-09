@@ -19,22 +19,15 @@
 
 ```mermaid
 erDiagram
-USERS ||--o{ SCHEDULES : creates
-USERS {
+PLANS (table_name: planner) {
 id bigint PK
-username varchar
+name varchar
 password varchar
-email varchar
-register_date date
-update_date date
-}
-SCHEDULES {
-id bigint PK
+plannedDate date
 title varchar
 task varchar
-posted_time datetime
-updated_time datetime
-user_id bigint FK
+createdDateTime datetime
+updatedDateTime datetime
 }
 ```
 
