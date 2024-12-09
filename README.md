@@ -43,7 +43,7 @@ erDiagram
 ### API List
 | Method | URI                    | Description             | Request Parameters                             | Response Code |
 |--------|------------------------|-------------------------|------------------------------------------------|---------------|
-| POST   | /plans                 | Create plan             |                                                | 201           |
+| POST   | /plans                 | Create plan             | name, password, plannedDate, title, task       | 201           |
 | GET    | /plans                 | Read all plans          | name, updatedDate                              | 200           |
 | GET    | /plans/{id}            | Read specific plan      | id                                             | 200           |
 | PATCH  | /plans/{id}            | Update plan partially   | id, name, password, plannedDate, title, task   | 200           |
@@ -82,7 +82,7 @@ erDiagram
 
 #### Response Body Details
 1. **`GET` Read All Plans**
-    ```json
+```json
 [
     {
         "id": 1,
@@ -103,9 +103,9 @@ erDiagram
         "updatedDateTime": "2024-12-10T14:00:00"
     }
 ]
-    ```
+```
 
-2. **`GET` Read Specific Plan**
+3. **`GET` Read Specific Plan**
     ```json
     {
         "id": 1,
