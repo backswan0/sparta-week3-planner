@@ -101,6 +101,8 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
 
         sql.append(" ORDER BY updated_date_time DESC");
 
+        sql.append(" LIMIT 5 OFFSET 0 ");
+
         List<Plan> allPlans;
 
         allPlans = jdbcTemplate.query(

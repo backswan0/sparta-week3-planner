@@ -4,6 +4,8 @@ import com.spring.weekthree.dto.plan.request.CreatePlanRequestDto;
 import com.spring.weekthree.dto.plan.request.PatchPlanRequestDto;
 import com.spring.weekthree.dto.plan.response.PlanResponseDto;
 import com.spring.weekthree.service.plan.PlanService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,10 +53,24 @@ public class PlanController {
     @GetMapping
     public ResponseEntity<List<PlanResponseDto>> readAllPlans(
             @RequestParam(required = false) Long memberId,
-            @RequestParam(required = false) LocalDate updatedDate
-            // 필수값이 아니기 때문에 둘 다 false로 설정
+            @RequestParam(required = false) LocalDate updatedDate,
+            @RequestParam(required = false) int page,
+            @RequestParam(required = false) int size
+            /*
+            스프링에서 제공하는 인터페이스라,
+            @RequestParam(required = false)을 명시하면 오류가 난다...? 왜????
+            @PageableDefault 어노테이션이 따로 있다.
+            만약 requestparam으로 받으려면 아래와 같이 해야 한다...!
+
+             */
     ) {
+        Pageable pageable = PageRequest.of(page, size);
+
         List<PlanResponseDto> allPlans;
+
+//        System.out.println(pageable.getOffset());
+//
+//        System.out.println(pageable.getPageSize());
 
         allPlans = planService.processFetchList(
                 memberId,
