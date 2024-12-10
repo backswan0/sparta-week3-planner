@@ -3,7 +3,7 @@
 ## 💻 Introduction
 - This project is an assignment designed to evaluate students' understanding of the online lecture.
 - The application is developed as a personal project.
-- The application designed with a console-based user interface.
+- The application is designed with a console-based user interface.
   
 ## 📆 Development Period
 - **Study**: 29/11/2024 – 03/12/2024
@@ -143,16 +143,16 @@ member_id bigint FK
 
 ### Request Body Description
 #### Field Information
-| Field Name      | Data Type | Mandatory Status     | Description                                 |
-|-----------------|-----------|----------------------|---------------------------------------------|
-| **planId**      | Long      | Mandatory / Optional | Identifier for each plan                    |
-| **memberId**    | Long      | Mandatory / Optional | Identifier for eah member                   |
-| **name**        | String    | Mandatory            | Member's name (less than 30 characters)     |
-| **password**    | String    | Mandatory            | Member's password (more than 10 characters) |
-| **plannedDate** | LocalDate | Mandatory            | Date of the plan (e.g., "2024-12-10")       |
-| **title**       | String    | Mandatory            | Title of the plan                           |
-| **task**        | String    | Mandatory            | Detailed description of the plan            |
-| **updatedDate** | LocalDate | Optional             | Date the plan was last edited               |
+| Field Name  | Data Type | Mandatory Status     | Description                                 |
+|-------------|-----------|----------------------|---------------------------------------------|
+| planId      | Long      | Mandatory / Optional | Identifier for each plan                    |
+| memberId    | Long      | Mandatory / Optional | Identifier for eah member                   |
+| name        | String    | Mandatory            | Member's name (less than 30 characters)     |
+| password    | String    | Mandatory            | Member's password (more than 10 characters) |
+| plannedDate | LocalDate | Mandatory            | Date of the plan (e.g., "2024-12-10")       |
+| title       | String    | Mandatory            | Title of the plan                           |
+| task        | String    | Mandatory            | Detailed description of the plan            |
+| updatedDate | LocalDate | Optional             | Date the plan was last edited               |
 
 ##  📊 Database Schema
 ### 1. MEMBERS
