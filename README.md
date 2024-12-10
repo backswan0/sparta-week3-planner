@@ -2,8 +2,8 @@
 
 ## 💻 Introduction
 - This project is an assignment designed to evaluate students' understanding of the online lecture.
-- Each application is developed as a personal project.
-- All applications are designed with console-based user interfaces.
+- The application is developed as a personal project.
+- The application is designed with a console-based user interface.
   
 ## 📆 Development Period
 - **Study**: 29/11/2024 – 03/12/2024
@@ -57,8 +57,8 @@ erDiagram
         "name" : "사용자명",
         "password" : "비밀번호",
         "plannedDate" : "일정 날짜",
-        "title": "일정 제목",
-        "task": "일정 내용"
+        "title" : "일정 제목",
+        "task" : "일정 내용"
     }
     ```
 
@@ -68,8 +68,8 @@ erDiagram
         "name" : "사용자명",
         "password" : "비밀번호",
         "plannedDate" : "일정 날짜",
-        "title": "일정 제목",
-        "task": "일정 내용"
+        "title" : "일정 제목",
+        "task" : "일정 내용"
     }
     ```
  
@@ -85,22 +85,22 @@ erDiagram
     ```json
     [
         {
-            "id": 1,
-            "name": "사용자명",
-            "plannedDate": "일정 날짜",
-            "title": "일정 제목",
-            "task": "일정 내용",
-            "createdDateTime": "2024-12-10T13:49:42",
-            "updatedDateTime": "2024-12-10T13:49:42"
+            "id" : 1,
+            "name" : "사용자명",
+            "plannedDate" : "일정 날짜",
+            "title" : "일정 제목",
+            "task" : "일정 내용",
+            "createdDateTime" : "2024-12-10T13:49:42",
+            "updatedDateTime" : "2024-12-10T13:49:42"
         },
         {
-            "id": 2,
-            "name": "사용자명2",
-            "plannedDate": "일정 날짜2",
-            "title": "일정 제목2",
-            "task": "일정 내용2",
-            "createdDateTime": "2024-12-10T14:00:00",
-            "updatedDateTime": "2024-12-10T14:00:00"
+            "id" : 2,
+            "name" : "사용자명2",
+            "plannedDate" : "일정 날짜2",
+            "title" : "일정 제목2",
+            "task" : "일정 내용2",
+            "createdDateTime" : "2024-12-10T14:00:00",
+            "updatedDateTime" : "2024-12-10T14:00:00"
         }
     ]
     ```
@@ -108,27 +108,46 @@ erDiagram
 3. **`GET` Read Specific Plan**
     ```json
     {
-        "id": 1,
-        "name": "사용자명",
-        "plannedDate": "일정 날짜",
-        "title": "일정 제목",
-        "task": "일정 내용",
-        "createdDateTime": "2024-12-10T13:49:42",
-        "updatedDateTime": "2024-12-10T13:49:42"
+        "id" : 1,
+        "name" : "사용자명",
+        "plannedDate" : "일정 날짜",
+        "title" : "일정 제목",
+        "task" : "일정 내용",
+        "createdDateTime" : "2024-12-10T13:49:42",
+        "updatedDateTime" : "2024-12-10T13:49:42"
     }
     ```
 
-## 🚀 Level
+### Error Response Code
+| HTTP Status | Description              | Message Example                  |
+|-------------|--------------------------|----------------------------------|
+| 400         | Bad Request              | "Password does not match"        |
+| 404         | Not Found                | "Id does not exist"              |
+| 500         | Internal Server Error    | "Internal Server Error occurred" |
 
-### 1️⃣ 
-- **Characteristics**
-  - 
-  - 
-- **Features** 
-  - 
-  - 
-  - 
-- **Usage**: 
+### Request Body Description
+### Field Information
+| Field Name      | Data Type  | Mandatory Status     | Description                                 |
+|-----------------|------------|----------------------|---------------------------------------------|
+| **id**          | Long       | Mandatory / Optional | Identifier for each plan.                   |
+| **name**        | String     | Mandatory / Optional | Member's name (less than 30 characters)     |
+| **password**    | String     | Mandatory            | Member's password (more than 10 characters) |
+| **plannedDate** | LocalDate  | Mandatory            | Date of the plan (e.g., "2024-12-10")       |
+| **title**       | String     | Mandatory            | Title of the plan                           |
+| **task**        | String     | Mandatory            | Detailed description of the plan            |
+| **updatedDate** | LocalDate  | Optional             | Date the plan was last edited               |
+
+## Database Schema
+
+
+
+
+
+## 🚀 Key Features
+- Implement CRUD functionality for plans.
+- Read specific plans by filtering `name` or `updatedDate`.
+- Save data in an SQL database using JdbcTemplate.
+- Provide password validation when updating or deleting a plan.
 
 ## 📜 More Information
 - [Visit Development Journal](https://writingforever162.tistory.com)
