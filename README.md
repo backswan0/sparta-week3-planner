@@ -37,6 +37,9 @@ updated_date_time datetime
 member_id bigint FK
 }
 ```
+### ERD Note
+- The SQL database table name of `PLANS` is `planner_challenge_members`.
+- The SQL database table name of `MEMBERS` is `planner_challenge_plans`.
 
 ## 📜 API Specification 
 ### Basic Information 
@@ -151,7 +154,7 @@ member_id bigint FK
 | **task**        | String    | Mandatory            | Detailed description of the plan            |
 | **updatedDate** | LocalDate | Optional             | Date the plan was last edited               |
 
-## Database Schema
+##  📊 Database Schema
 ### 1. MEMBERS
 ```sql
 CREATE TABLE PLANNER_CHALLENGE_MEMBERS
