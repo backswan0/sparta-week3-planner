@@ -105,7 +105,7 @@ erDiagram
     ]
     ```
 
-3. **`GET` Read Specific Plan**
+2. **`GET` Read Specific Plan**
     ```json
     {
         "id" : 1,
