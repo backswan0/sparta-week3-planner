@@ -127,15 +127,15 @@ erDiagram
 
 ### Request Body Description
 #### Field Information
-| Field Name      | Data Type  | Mandatory Status     | Description                                 |
-|-----------------|------------|----------------------|---------------------------------------------|
-| **id**          | Long       | Mandatory / Optional | Identifier for each plan                    |
-| **name**        | String     | Mandatory / Optional | Member's name (less than 30 characters)     |
-| **password**    | String     | Mandatory            | Member's password (more than 10 characters) |
-| **plannedDate** | LocalDate  | Mandatory            | Date of the plan (e.g., "2024-12-10")       |
-| **title**       | String     | Mandatory            | Title of the plan                           |
-| **task**        | String     | Mandatory            | Detailed description of the plan            |
-| **updatedDate** | LocalDate  | Optional             | Date the plan was last edited               |
+| Field Name  | Data Type  | Mandatory Status     | Description                                 |
+|-------------|------------|----------------------|---------------------------------------------|
+| id          | Long       | Mandatory / Optional | Identifier for each plan                    |
+| name        | String     | Mandatory / Optional | Member's name (less than 30 characters)     |
+| password    | String     | Mandatory            | Member's password (more than 10 characters) |
+| plannedDate | LocalDate  | Mandatory            | Date of the plan (e.g., "2024-12-10")       |
+| title       | String     | Mandatory            | Title of the plan                           |
+| task        | String     | Mandatory            | Detailed description of the plan            |
+| updatedDate | LocalDate  | Optional             | Date the plan was last edited               |
 
 ## 📊 Database Schema
 ```sql
