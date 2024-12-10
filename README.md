@@ -137,7 +137,7 @@ erDiagram
 | **task**        | String     | Mandatory            | Detailed description of the plan            |
 | **updatedDate** | LocalDate  | Optional             | Date the plan was last edited               |
 
-## Database Schema
+## 📊 Database Schema
 ```sql
 CREATE TABLE planner
 (
