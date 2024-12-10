@@ -126,7 +126,7 @@ erDiagram
 | 500         | Internal Server Error    | "Internal Server Error occurred" |
 
 ### Request Body Description
-### Field Information
+#### Field Information
 | Field Name      | Data Type  | Mandatory Status     | Description                                 |
 |-----------------|------------|----------------------|---------------------------------------------|
 | **id**          | Long       | Mandatory / Optional | Identifier for each plan.                   |
@@ -138,10 +138,20 @@ erDiagram
 | **updatedDate** | LocalDate  | Optional             | Date the plan was last edited               |
 
 ## Database Schema
-
-
-
-
+```sql
+CREATE TABLE planner
+(
+    id              BIGINT AUTO_INCREMENT COMMENT '일정 식별자'
+        PRIMARY KEY,
+    name            VARCHAR(50)  NOT NULL COMMENT '작성자명',
+    password        VARCHAR(50)  NOT NULL COMMENT '비밀번호',
+    plannedDate     DATE         NOT NULL COMMENT '일정 날짜',
+    title           VARCHAR(50)  NOT NULL COMMENT '일정 제목',
+    task            VARCHAR(100) NULL COMMENT '일정 내용',
+    createdDateTime DATETIME     NOT NULL COMMENT '생성 날짜',
+    updatedDateTime DATETIME     NOT NULL COMMENT '수정 날짜'
+);
+```
 
 ## 🚀 Key Features
 - Implement CRUD functionality for plans.
