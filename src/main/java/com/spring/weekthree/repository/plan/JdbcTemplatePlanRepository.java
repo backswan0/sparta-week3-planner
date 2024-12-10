@@ -15,14 +15,24 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+// 일정 리포지토리 레이어
 @Repository
 public class JdbcTemplatePlanRepository implements PlanRepository {
+    // 속성
     private final JdbcTemplate jdbcTemplate;
 
+    // 생성자
     public JdbcTemplatePlanRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    /**
+     * 기능
+     * [1/5] 생성된 일정 저장
+     *
+     * @param plan : 저장하려는 일정
+     * @return Plan
+     */
     @Override
     public Plan save(Plan plan) {
         SimpleJdbcInsert jdbcInsert;
@@ -59,6 +69,14 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         );
     }
 
+    /**
+     * 기능
+     * [2/5] 일정 전체 조회
+     *
+     * @param memberId    : 사용자의 id
+     * @param updatedDate : 일정이 수정된 날짜
+     * @return List<Plan>
+     */
     @Override
     public List<Plan> fetchAllPlans(
             Long memberId,
@@ -94,6 +112,13 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         return allPlans;
     }
 
+    /**
+     * 기능
+     * [3/5] 일정 단건 조회
+     *
+     * @param planId : 조회하려는 일정의 id
+     * @return Plan
+     */
     @Override
     public Plan fetchPlanById0rElseThrow(Long planId) {
 
@@ -112,9 +137,20 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         return result.get(0);
     }
 
+    /**
+     * 기능
+     * [4/5] 일정 수정
+     *
+     * @param planId          : 수정하려는 일정의 id
+     * @param plannedDate     : 수정하려는 일정 날짜
+     * @param title           : 수정하려는 일정 제목
+     * @param task            : 수정하려는 일정 할일
+     * @param updatedDateTime : 일정이 수정된  날짜
+     * @return int
+     */
     @Override
     public int updatePatchInRepository(
-            Long id,
+            Long planId,
             LocalDate plannedDate,
             String title,
             String task,
@@ -131,10 +167,16 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
                 title,
                 task,
                 updatedDateTime,
-                id
+                planId
         );
     }
 
+    /**
+     * 기능
+     * [5/5] 일정 삭제
+     *
+     * @param planId : 삭제하려는 일정의 Id
+     */
     @Override
     public void deletePlan(Long planId) {
         jdbcTemplate.update(

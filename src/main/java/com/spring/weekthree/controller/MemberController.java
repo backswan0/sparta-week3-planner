@@ -14,11 +14,18 @@ public class MemberController {
     private final MemberService memberService;
 
     // 생성자
-    public MemberController (MemberService memberService) {
+    public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }
 
-    // 기능
+    /**
+     * 기능
+     * [1/1] UPDATE (PATCH) - 사용자명 수정
+     *
+     * @param memberId   : 사용자의 id
+     * @param requestDto : MemberRequestDto
+     * @return MemberResponseDto, HttpStatus 200 OK
+     */
     @PatchMapping("/{memberId}")
     public ResponseEntity<MemberResponseDto> updateName(
             @PathVariable Long memberId,

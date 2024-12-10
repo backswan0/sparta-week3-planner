@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// 사용자명 수정 요청에 해당하는 request dto
 @NoArgsConstructor
 @Setter
 @Getter

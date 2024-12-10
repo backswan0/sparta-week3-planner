@@ -14,16 +14,25 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// 사용자 리포지토리 레이어
 @Repository
 public class JdbcTemplateMemberRepository implements MemberRepository {
+    // 속성
     private final JdbcTemplate jdbcTemplate;
 
+    // 생성자
     public JdbcTemplateMemberRepository(
             DataSource dataSource
     ) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    /**
+     * 기능
+     * [1/2] 사용자 조회
+     * @param memberId : 사용자의 id
+     * @return 사용자 id에 해당하는 plan list
+     */
     @Override
     public Member fetchMemberByIdOrElseThrow(Long memberId) {
         List<Member> result = jdbcTemplate.query(
@@ -56,6 +65,13 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
         };
     }
 
+    /**
+     * 기능
+     * [2/2]
+     * @param memberId : 사용자의 id
+     * @param name : 수정하려는 사용자명
+     * @return int
+     */
     @Override
     public int updateMemberName(Long memberId, String name) {
 

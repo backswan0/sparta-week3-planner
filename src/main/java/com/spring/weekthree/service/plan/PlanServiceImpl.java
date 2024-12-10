@@ -3,7 +3,6 @@ package com.spring.weekthree.service.plan;
 import com.spring.weekthree.dto.plan.request.CreatePlanRequestDto;
 import com.spring.weekthree.dto.plan.response.PlanResponseDto;
 import com.spring.weekthree.entity.Plan;
-import com.spring.weekthree.repository.member.MemberRepository;
 import com.spring.weekthree.repository.plan.PlanRepository;
 import com.spring.weekthree.util.TimeUtil;
 import org.springframework.stereotype.Service;
@@ -13,14 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 도전 과제 C 완료
- * 도전 과제 R 전체 조회 완료
- * 도전 과제 R 단건 조회 리팩토링 완료
- * 도전 과제 U 초안 완료
- * 도전 과제 D 완료
- */
-
+// 일정 서비스 레이어
 @Service
 public class PlanServiceImpl implements PlanService {
     // 속성
@@ -34,7 +26,13 @@ public class PlanServiceImpl implements PlanService {
         this.planRepository = planRepository;
     }
 
-    // 기능
+    /**
+     * 기능
+     * [1/5] 일정 저장
+     *
+     * @param requestDto : 저장하려는 객체를 요청 dto로 변환한 것
+     * @return PlanResponseDto
+     */
     @Override
     public PlanResponseDto processSave(
             CreatePlanRequestDto requestDto
@@ -56,6 +54,14 @@ public class PlanServiceImpl implements PlanService {
          */
     }
 
+    /**
+     * 기능
+     * [2/5] 일정 목록 조회
+     *
+     * @param memberId    : 사용자명 대신 필터링으로 쓰려는 사용자 id
+     * @param updatedDate : 일정을 수정한 날짜
+     * @return List<PlanResponseDto>
+     */
     @Override
     public List<PlanResponseDto> processFetchList(
             Long memberId,
@@ -81,14 +87,32 @@ public class PlanServiceImpl implements PlanService {
         // 4. 반환한다.
     }
 
+    /**
+     * 기능
+     * [3/5] 일정 단건 조회
+     *
+     * @param planId : 조회하려는 일정의 id
+     * @return PlanResponseDto
+     */
     @Override
-    public PlanResponseDto processFetchEach(Long memberId) {
+    public PlanResponseDto processFetchEach(Long planId) {
 
-        Plan plan = planRepository.fetchPlanById0rElseThrow(memberId);
+        Plan plan = planRepository.fetchPlanById0rElseThrow(planId);
 
         return new PlanResponseDto(plan);
     }
 
+    /**
+     * 기능
+     * [4/5] 일정 수정
+     *
+     * @param planId      : 수정하려는 일정의 id
+     * @param password    : 인증에 필요한 비밀번호
+     * @param plannedDate : 일정 날짜
+     * @param title       : 일정 제목
+     * @param task        : 일정 내용
+     * @return PlanResponseDto
+     */
     @Override
     public PlanResponseDto processUpdatePatch(
             Long planId,
@@ -105,7 +129,7 @@ public class PlanServiceImpl implements PlanService {
 
         LocalDateTime updatedDateTime = TimeUtil.now();
 
-        plan.update(
+        plan.updatePlan(
                 plannedDate,
                 title,
                 task,
@@ -123,6 +147,13 @@ public class PlanServiceImpl implements PlanService {
         return new PlanResponseDto(plan);
     }
 
+    /**
+     * 기능
+     * [5/5] 일정 삭제
+     *
+     * @param planId   : 삭제하려는 일정의 id
+     * @param password : 인증에 필요한 비밀번호
+     */
     @Override
     public void processDelete(Long planId, String password) {
 

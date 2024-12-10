@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+// 일정 엔티티
 @AllArgsConstructor
 @Getter
 public class Plan {
@@ -48,7 +49,8 @@ public class Plan {
         this.updatedDateTime = TimeUtil.now();
     }
 
-    public void update (
+    // 기능 [1/2] 일정 수정
+    public void updatePlan(
             LocalDate plannedDate,
             String title,
             String task,
@@ -61,6 +63,7 @@ public class Plan {
         this.updatedDateTime = updatedDateTime;
     }
 
+    // 기능 [2/2] 비밀번호 인증
     public void validatePassword(String password) {
         if (!Objects.equals(password, this.password))
             throw new ResponseStatusException(
