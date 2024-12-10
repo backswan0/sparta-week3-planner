@@ -1,4 +1,4 @@
-package com.spring.weekthree.dto.responsedto;
+package com.spring.weekthree.dto.plan.response;
 
 import com.spring.weekthree.entity.Plan;
 import lombok.AllArgsConstructor;

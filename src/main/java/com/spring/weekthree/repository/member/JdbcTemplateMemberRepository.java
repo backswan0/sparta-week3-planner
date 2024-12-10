@@ -1,6 +1,7 @@
 package com.spring.weekthree.repository.member;
 
 import com.spring.weekthree.entity.Member;
+import com.spring.weekthree.util.TimeUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -10,15 +11,8 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
-
-/**
- * 도전 과제 C 완료
- * 도전 과제 R 전체 조회 완료
- * 도전 과제 R 단건 조회 리팩토링 완료
- * 도전 과제 U 초안 완료
- * 도전 과제 D 완료
- */
 
 @Repository
 public class JdbcTemplateMemberRepository implements MemberRepository {
@@ -31,7 +25,7 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Member findMemberById(Long memberId) {
+    public Member fetchMemberByIdOrElseThrow(Long memberId) {
         List<Member> result = jdbcTemplate.query(
                 "SELECT * FROM planner_challenge_members WHERE id = "
                         + memberId,
@@ -44,7 +38,6 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
                     "Id does no exist id = " + memberId
             );
         }
-
         return result.get(0);
     }
 
@@ -56,7 +49,7 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
                         rs.getLong("id"),
                         rs.getString("name"),
                         rs.getString("email"),
-                        rs.getTimestamp("create_date_time").toLocalDateTime(),
+                        rs.getTimestamp("created_date_time").toLocalDateTime(),
                         rs.getTimestamp("updated_date_time").toLocalDateTime()
                 );
             }
@@ -66,12 +59,15 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
     @Override
     public int updateMemberName(Long memberId, String name) {
 
+        LocalDateTime updatedDateTime = TimeUtil.now();
+
         return jdbcTemplate.update(
                 "UPDATE planner_challenge_members SET " +
-                        "name = ?" +
+                        "name = ?, " +
+                        "updated_date_time = ? " +
                         "WHERE id = ?",
-
                 name,
+                updatedDateTime,
                 memberId
         );
     }

@@ -1,7 +1,7 @@
-package com.spring.weekthree.service;
+package com.spring.weekthree.service.plan;
 
-import com.spring.weekthree.dto.requestdto.CreatePlanRequestDto;
-import com.spring.weekthree.dto.responsedto.PlanResponseDto;
+import com.spring.weekthree.dto.plan.request.CreatePlanRequestDto;
+import com.spring.weekthree.dto.plan.response.PlanResponseDto;
 import com.spring.weekthree.entity.Plan;
 import com.spring.weekthree.repository.member.MemberRepository;
 import com.spring.weekthree.repository.plan.PlanRepository;
@@ -25,16 +25,13 @@ import java.util.List;
 public class PlanServiceImpl implements PlanService {
     // 속성
     private final PlanRepository planRepository;
-    private final MemberRepository memberRepository;
 
     // 생성자
     public PlanServiceImpl(
-            PlanRepository planRepository,
-            MemberRepository memberRepository
+            PlanRepository planRepository
     ) {
 
         this.planRepository = planRepository;
-        this.memberRepository = memberRepository;
     }
 
     // 기능
@@ -64,7 +61,12 @@ public class PlanServiceImpl implements PlanService {
             Long memberId,
             LocalDate updatedDate
     ) {
-        List<Plan> plans = planRepository.fetchAllPlans(memberId, updatedDate);
+        List<Plan> plans;
+
+        plans = planRepository.fetchAllPlans(
+                memberId,
+                updatedDate
+        );
         // 1. 레포지토리에서 리스트를 타입이 Plan인 리스트를 가져온다.
 
         List<PlanResponseDto> allPlans = new ArrayList<>();
@@ -90,7 +92,6 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public PlanResponseDto processUpdatePatch(
             Long planId,
-            String name,
             String password,
             LocalDate plannedDate,
             String title,
@@ -111,7 +112,7 @@ public class PlanServiceImpl implements PlanService {
                 updatedDateTime
         );
 
-        int updatedRow = planRepository.updatePatchInRepository(
+        planRepository.updatePatchInRepository(
                 planId,
                 plannedDate,
                 title,
@@ -119,9 +120,6 @@ public class PlanServiceImpl implements PlanService {
                 updatedDateTime
         );
 
-        if (updatedRow >= 1) {
-            memberRepository.updateMemberName(plan.getMemberId(), name);
-        }
         return new PlanResponseDto(plan);
     }
 

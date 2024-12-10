@@ -1,4 +1,4 @@
-package com.spring.weekthree.dto.requestdto;
+package com.spring.weekthree.dto.plan.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

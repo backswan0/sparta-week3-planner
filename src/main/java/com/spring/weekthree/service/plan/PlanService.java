@@ -1,7 +1,7 @@
-package com.spring.weekthree.service;
+package com.spring.weekthree.service.plan;
 
-import com.spring.weekthree.dto.requestdto.CreatePlanRequestDto;
-import com.spring.weekthree.dto.responsedto.PlanResponseDto;
+import com.spring.weekthree.dto.plan.request.CreatePlanRequestDto;
+import com.spring.weekthree.dto.plan.response.PlanResponseDto;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,7 +26,6 @@ public interface PlanService {
 
     /**
      * @param id          :
-     * @param name        :
      * @param password    :
      * @param plannedDate :
      * @param title       :
@@ -35,7 +34,6 @@ public interface PlanService {
      */
     PlanResponseDto processUpdatePatch(
             Long id,
-            String name,
             String password,
             LocalDate plannedDate,
             String title,

@@ -5,14 +5,6 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-/**
- * 도전 과제 C 완료
- * 도전 과제 R 전체 조회 완료
- * 도전 과제 R 단건 조회 리팩토링 완료
- * 도전 과제 U 초안 완료
- * 도전 과제 D 완료
- */
-
 @Getter
 public class Member {
     private Long memberId;
@@ -21,7 +13,13 @@ public class Member {
     private LocalDateTime createdDateTime;
     private LocalDateTime updatedDateTime;
 
-    public Member(Long memberId, String name, String email, LocalDateTime createdDateTime, LocalDateTime updatedDateTime) {
+    public Member(
+            Long memberId,
+            String name,
+            String email,
+            LocalDateTime createdDateTime,
+            LocalDateTime updatedDateTime
+    ) {
         this.memberId = memberId;
         this.name = name;
         this.email = email;

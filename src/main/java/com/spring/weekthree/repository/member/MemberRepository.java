@@ -13,7 +13,7 @@ import com.spring.weekthree.entity.Member;
 public interface MemberRepository {
 
     // 유저 조회
-    Member findMemberById(Long memberId);
+    Member fetchMemberByIdOrElseThrow(Long memberId);
 
     // 유저 정보 업데이트 (update)
     int updateMemberName(Long memberId, String name);

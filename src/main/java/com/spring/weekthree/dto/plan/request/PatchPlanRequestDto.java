@@ -1,4 +1,4 @@
-package com.spring.weekthree.dto.requestdto;
+package com.spring.weekthree.dto.plan.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,6 @@ import java.time.LocalDate;
 @Getter
 public class PatchPlanRequestDto {
     // 속성
-    private String name;
     private String password;
     private LocalDate plannedDate;
     private String title;

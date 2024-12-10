@@ -1,9 +1,9 @@
 package com.spring.weekthree.controller;
 
-import com.spring.weekthree.dto.requestdto.CreatePlanRequestDto;
-import com.spring.weekthree.dto.requestdto.PatchPlanRequestDto;
-import com.spring.weekthree.dto.responsedto.PlanResponseDto;
-import com.spring.weekthree.service.PlanService;
+import com.spring.weekthree.dto.plan.request.CreatePlanRequestDto;
+import com.spring.weekthree.dto.plan.request.PatchPlanRequestDto;
+import com.spring.weekthree.dto.plan.response.PlanResponseDto;
+import com.spring.weekthree.service.plan.PlanService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,13 +49,16 @@ public class PlanController {
     ) {
         List<PlanResponseDto> allPlans;
 
-        allPlans = planService.processFetchList(memberId, updatedDate);
+        allPlans = planService.processFetchList(
+                memberId,
+                updatedDate
+        );
 
         return new ResponseEntity<>(allPlans, HttpStatus.OK);
     }
 
     @GetMapping("/{planId}")
-    public ResponseEntity<PlanResponseDto> readPlanByMemberId(
+    public ResponseEntity<PlanResponseDto> readPlanByPlanId(
             @PathVariable Long planId
     ) {
         PlanResponseDto responseDto;
@@ -65,16 +68,15 @@ public class PlanController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{planId}")
     public ResponseEntity<PlanResponseDto> updatePatch(
-            @PathVariable Long id,
+            @PathVariable Long planId,
             @RequestBody PatchPlanRequestDto requestDto
     ) {
         PlanResponseDto responseDto;
 
         responseDto = planService.processUpdatePatch(
-                id,
-                requestDto.getName(),
+                planId,
                 requestDto.getPassword(),
                 requestDto.getPlannedDate(),
                 requestDto.getTitle(),
