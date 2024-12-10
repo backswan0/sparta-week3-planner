@@ -2,8 +2,8 @@
 
 ## 💻 Introduction
 - This project is an assignment designed to evaluate students' understanding of the online lecture.
-- Each application is developed as a personal project.
-- All applications are designed with console-based user interfaces.
+- The application is developed as a personal project.
+- The application designed with a console-based user interface.
   
 ## 📆 Development Period
 - **Study**: 29/11/2024 – 03/12/2024
@@ -19,49 +19,52 @@
 
 ```mermaid
 erDiagram
-USERS ||--o{ SCHEDULES : creates
-USERS {
+MEMBERS ||--o{ PLANS : creates
+MEMBERS {
 id bigint PK
-username varchar
+name varchar
 password varchar
 email varchar
-register_date date
-update_date date
+created_date_time datetime
+updated_date_time datetime
 }
-SCHEDULES {
+PLANS {
 id bigint PK
 title varchar
 task varchar
-posted_time datetime
-updated_time datetime
-user_id bigint FK
+created_date_time datetime
+updated_date_time datetime
+member_id bigint FK
 }
 ```
 
 ## 📜 API Specification 
 ### Basic Information 
-- Base URL: /plans
+- Base URL (plan): /plans
+- Base URL (member): /members
 - Response Format: JSON
 - Character Encoding: UTF-8
 
 ### API List
-| Method | URI                    | Description             | Request Parameters          | Response Code |
-|--------|------------------------|-------------------------|-----------------------------|---------------|
-| POST   | /plans                 | Create plan             |                             | 201           |
-| GET    | /plans                 | Get all plans           |                             | 200           |
-| GET    | /plans/{id}            | Search specific plan    | memberId, updatedDate       | 200           |
-| PATCH  | /plans/{id}            | Update plan partially   | id, title, task, password   | 200           |
-| DELETE | /plans/{id}            | Delete plan             | id, password                | 200           |
+| Method | URI           | Description            | Request Parameters                         | Response Code |
+|--------|---------------|------------------------|--------------------------------------------|---------------|
+| POST   | /plans        | Create plan            | name, password, plannedDate, title, task   | 201           |
+| GET    | /plans        | Read all plans         | memberId, updatedDate                      | 200           |
+| GET    | /plans/{id}   | Read specific plans    | planId                                     | 200           | 
+| PATCH  | /plans/{id}   | Update plan partially  | planId, password, plannedDate, title, task | 200           |
+| PATCH  | /members/{id} | Update member name     | memberId, name                             | 200           |
+| DELETE | /plans/{id}   | Delete plan            | planId, password                           | 200           |
 
 ### API Details
 #### Request Body Details
 1. **`POST` Create Plan**
     ```json
     {
-        "title": "일정 제목",
-        "task": "할 일 내용",
-        "name": "사용자명",
-        "password": "비밀번호"
+        "name" : "사용자명",
+        "password" : "비밀번호",
+        "plannedDate" : "일정 날짜",
+        "title" : "일정 제목",
+        "task" : "일정 내용"
     }
     ```
 
