@@ -92,7 +92,7 @@ member_id bigint FK
 4. **`DELETE` Delete Plan**
    ```json
    {
-   "password" : "비밀번호"
+        "password" : "비밀번호"
    }
     ```
 
