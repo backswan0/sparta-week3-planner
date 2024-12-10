@@ -9,7 +9,7 @@
 - **Study**: 29/11/2024 – 03/12/2024
 - **Development**: 03/12/2024 – 10/12/2024
 
-## 💻 Tech Stack
+## 🛠️ Tech Stack
 - Java 17
 - Spring Boot 3.4.0
 - MySQL 9.1.0
