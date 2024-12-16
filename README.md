@@ -38,8 +38,8 @@ member_id bigint FK
 }
 ```
 ### ERD Note
-- The SQL database table name of `PLANS` is `planner_challenge_members`.
-- The SQL database table name of `MEMBERS` is `planner_challenge_plans`.
+- The SQL database table name of `PLANS` is `planner_challenge_plans`.
+- The SQL database table name of `MEMBERS` is `planner_challenge_members`.
 
 ## 📜 API Specification 
 ### Basic Information 
