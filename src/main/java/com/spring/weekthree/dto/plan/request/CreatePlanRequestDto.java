@@ -1,20 +1,16 @@
-package com.spring.weekthree.dto.requestdto;
+package com.spring.weekthree.dto.plan.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-/**
- * [리팩토링 완료]
- * 수정이 바로 안 되는 점 해결
- */
-
+// 일정 생성 요청에 해당하는 request dto
 @NoArgsConstructor
 @Getter
-public class PatchPlanRequestDto {
+public class CreatePlanRequestDto {
     // 속성
-    private String name;
+    private Long memberId;
     private String password;
     private LocalDate plannedDate;
     private String title;
