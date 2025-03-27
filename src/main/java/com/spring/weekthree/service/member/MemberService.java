@@ -10,4 +10,7 @@ public interface MemberService {
             Long memberId,
             String name
     );
+
+    // 페이지네이션 사용
+    MemberResponseDto processFetchMemberById(Long memberId);
 }

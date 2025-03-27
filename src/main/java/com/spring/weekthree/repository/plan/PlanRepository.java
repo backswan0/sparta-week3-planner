@@ -1,6 +1,7 @@
 package com.spring.weekthree.repository.plan;
 
 import com.spring.weekthree.entity.Plan;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,7 +16,8 @@ public interface PlanRepository {
     // 일정 목록 조회
     List<Plan> fetchAllPlans(
             Long memberId,
-            LocalDate updatedDate
+            LocalDate updatedDate,
+            Pageable pageable
     );
 
     // 일정 단건 조회

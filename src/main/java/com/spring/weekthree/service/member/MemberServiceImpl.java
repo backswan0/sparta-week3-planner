@@ -29,9 +29,7 @@ public class MemberServiceImpl implements MemberService {
             Long memberId,
             String name
     ) {
-        Member member;
-
-        member = memberRepository.fetchMemberByIdOrElseThrow(memberId);
+        Member member = memberRepository.fetchMemberByIdOrElseThrow(memberId);
 
         member.updateName(name);
 
@@ -42,4 +40,14 @@ public class MemberServiceImpl implements MemberService {
 
         return new MemberResponseDto(member);
     }
+
+    // 멤버 단건 조회
+    @Override
+    public MemberResponseDto processFetchMemberById(Long memberId) {
+
+        Member member = memberRepository.fetchMemberByIdOrElseThrow(memberId);
+
+        return new MemberResponseDto(member);
+    }
+
 }

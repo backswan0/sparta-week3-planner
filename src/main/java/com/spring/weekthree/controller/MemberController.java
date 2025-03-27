@@ -31,9 +31,7 @@ public class MemberController {
             @PathVariable Long memberId,
             @RequestBody PatchMemberRequestDto requestDto
     ) {
-        MemberResponseDto responseDto;
-
-        responseDto = memberService.processUpdateName(
+        MemberResponseDto responseDto = memberService.processUpdateName(
                 memberId,
                 requestDto.getName()
         );

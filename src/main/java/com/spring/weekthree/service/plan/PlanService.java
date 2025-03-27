@@ -2,6 +2,8 @@ package com.spring.weekthree.service.plan;
 
 import com.spring.weekthree.dto.plan.request.CreatePlanRequestDto;
 import com.spring.weekthree.dto.plan.response.PlanResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,7 +16,8 @@ public interface PlanService {
     // 일정 목록 조회
     List<PlanResponseDto> processFetchList(
             Long memberId,
-            LocalDate updatedDate
+            LocalDate updatedDate,
+            Pageable pageable
     );
 
     // 일정 단건 조회

@@ -3,8 +3,10 @@ package com.spring.weekthree.service.plan;
 import com.spring.weekthree.dto.plan.request.CreatePlanRequestDto;
 import com.spring.weekthree.dto.plan.response.PlanResponseDto;
 import com.spring.weekthree.entity.Plan;
+import com.spring.weekthree.repository.member.MemberRepository;
 import com.spring.weekthree.repository.plan.PlanRepository;
 import com.spring.weekthree.util.TimeUtil;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,13 +19,13 @@ import java.util.List;
 public class PlanServiceImpl implements PlanService {
     // 속성
     private final PlanRepository planRepository;
+    private final MemberRepository memberRepository;
 
     // 생성자
     public PlanServiceImpl(
-            PlanRepository planRepository
-    ) {
-
+            PlanRepository planRepository, MemberRepository memberRepository) {
         this.planRepository = planRepository;
+        this.memberRepository = memberRepository;
     }
 
     /**
@@ -47,11 +49,6 @@ public class PlanServiceImpl implements PlanService {
         Plan savedPlan = planRepository.save(plan);
 
         return new PlanResponseDto(savedPlan);
-        /*
-        TODO
-         repository를 in-memory에서 데이터베이스로 갈아끼울 때
-         아예 PlanServiceImpl을 건드리지 않는 방법은 없을까?
-         */
     }
 
     /**
@@ -65,26 +62,31 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public List<PlanResponseDto> processFetchList(
             Long memberId,
-            LocalDate updatedDate
+            LocalDate updatedDate,
+            Pageable pageable
     ) {
-        List<Plan> plans;
-
-        plans = planRepository.fetchAllPlans(
+        /*
+        [1. 언제 호출해야 하는가? == memberId가 null이 아닐 때..!]
+        1. member id -> 호출할 수 있음 (== 매개 변수)
+        2. updatedDate -> 호출할 수 없음, 근데 memberRepository를 호출하면? 당연히 에러가 발생하겠지?
+           2번에서는 조회하면 안 됨
+        3. member id && updatedDate
+        4. null일 때도 호출하면? 에러 발생하겠지?
+        [2. 어디서 호출해야 하는가?]
+         */
+        List<Plan> plans = planRepository.fetchAllPlans(
                 memberId,
-                updatedDate
+                updatedDate,
+                pageable
         );
-        // 1. 레포지토리에서 리스트를 타입이 Plan인 리스트를 가져온다.
 
         List<PlanResponseDto> allPlans = new ArrayList<>();
-        // 2. 타입이 PlanResponseDto인 리스트 allPlans를 선언한다.
 
         for (Plan plan : plans) {
             allPlans.add(new PlanResponseDto(plan));
         }
-        // 3. plans에서 plan을 하나씩 꺼내 dto 객체로 생성하여 넣는다.
 
         return allPlans;
-        // 4. 반환한다.
     }
 
     /**
@@ -121,9 +123,7 @@ public class PlanServiceImpl implements PlanService {
             String title,
             String task
     ) {
-        Plan plan;
-
-        plan = planRepository.fetchPlanById0rElseThrow(planId);
+        Plan plan = planRepository.fetchPlanById0rElseThrow(planId);
 
         plan.validatePassword(password);
 
@@ -143,7 +143,6 @@ public class PlanServiceImpl implements PlanService {
                 task,
                 updatedDateTime
         );
-
         return new PlanResponseDto(plan);
     }
 
@@ -157,9 +156,7 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public void processDelete(Long planId, String password) {
 
-        Plan plan;
-
-        plan = planRepository.fetchPlanById0rElseThrow(planId);
+        Plan plan = planRepository.fetchPlanById0rElseThrow(planId);
 
         plan.validatePassword(password);
 
